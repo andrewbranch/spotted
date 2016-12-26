@@ -1,0 +1,22 @@
+{
+  "name": "spotted-service",
+  "version": "1.0.0",
+  "description": "Logic and server for parsing and relaying Spot GPS messages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewbranch/spotted.git"
+  },
+  "author": "Andrew Branch <andrew@wheream.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewbranch/spotted/issues"
+  },
+  "homepage": "https://github.com/andrewbranch/spotted#readme",
+  "dependencies": {
+    "hapi": "^16.0.2"
+  }
+}
