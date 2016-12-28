@@ -18,7 +18,8 @@
   "homepage": "https://github.com/andrewbranch/spotted#readme",
   "dependencies": {
     "hapi": "^16.0.2",
-    "mongoose": "^4.7.5"
+    "mongoose": "^4.7.5",
+    "winston": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
