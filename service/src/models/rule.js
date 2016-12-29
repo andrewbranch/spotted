@@ -2,7 +2,7 @@
 
 import mongoose from 'mongoose';
 import typeof { default as Recipient } from './recipient';
-import type { MessageType } from '../utils/messageTypes';
+import type { MessageType } from '../types/messageType';
 
 if (!mongoose.models.Rule) {
   throw new Error('Rule model has not been registered yet');

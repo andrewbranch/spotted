@@ -1,8 +1,9 @@
 /* @flow */
 
 import mongoose from 'mongoose';
-import messageTypes from '../utils/messageTypes';
+import type { MessageType } from '../types/messageType';
 const { ObjectId } = mongoose.Schema.Types;
+const messageTypes: MessageType[] = ['ok', 'custom', 'help'];
 
 export default mongoose.Schema({
   recipients: [{ type: ObjectId, ref: 'Recipient' }],
