@@ -6,10 +6,11 @@ if (!mongoose.models.Recipient) {
   throw new Error('Recipient model has not been registered yet');
 }
 
-type Recipient = {
+interface Recipient {
   name: string;
   phone?: string;
   email?: string;
+  [key: string]: any;
 };
 
 export default (mongoose.models.Recipient: Recipient);

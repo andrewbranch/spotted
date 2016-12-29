@@ -8,12 +8,15 @@ if (!mongoose.models.Rule) {
   throw new Error('Rule model has not been registered yet');
 }
 
-type Rule = {
-  recipients: mixed[];
+export interface Rule {
   messageType: MessageType;
   messageFormat: string;
   enabled: boolean;
   [key: string]: any;
 };
+
+export interface PopulatedRule extends Rule {
+  recipients: Recipient[];
+}
 
 export default (mongoose.models.Rule: Rule);
