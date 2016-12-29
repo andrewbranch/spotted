@@ -1,6 +1,7 @@
 /* @flow */
 
 import mongoose from 'mongoose';
+import type { ModelConstructor } from '../types/mongoose';
 import typeof { default as Recipient } from './recipient';
 import type { MessageType } from '../types/messageType';
 
@@ -17,6 +18,6 @@ export interface Rule {
 
 export interface PopulatedRule extends Rule {
   recipients: Recipient[];
-}
+};
 
-export default (mongoose.models.Rule: Rule);
+export default (mongoose.models.Rule: ModelConstructor<Rule>);
