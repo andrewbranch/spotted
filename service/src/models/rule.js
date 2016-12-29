@@ -20,4 +20,4 @@ export interface PopulatedRule extends Rule {
   recipients: Recipient[];
 };
 
-export default (mongoose.models.Rule: ModelConstructor<Rule>);
+export default (mongoose.models.Rule: ModelConstructor<Rule, PopulatedRule>);

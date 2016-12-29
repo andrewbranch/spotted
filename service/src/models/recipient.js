@@ -14,4 +14,4 @@ export interface Recipient {
   [key: string]: any;
 };
 
-export default (mongoose.models.Recipient: ModelConstructor<Recipient>);
+export default (mongoose.models.Recipient: ModelConstructor<Recipient, Recipient>);
