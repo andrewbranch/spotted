@@ -7,14 +7,14 @@ import type { MessageType } from '../types/messageType';
 const subjectMessageTypeMap: { [key: string]: MessageType } = {
   check: 'ok',
   ok: 'ok',
-  help: 'ok',
+  help: 'help',
   custom: 'custom',
 };
 
 export default (body: string, subject: string): SpotData => {
   const trimmed = body.trim();
   const lines = trimmed.split('\n');
-  const deviceName = lines[0];
+  const deviceName = lines[0].trim();
   const latitude = get(trimmed.match(/latitude: *?(-?[0-9]+\.[0-9]+)/i), 1);
   const longitude = get(trimmed.match(/longitude: *?(-?[0-9]+\.[0-9]+)/i), 1);
   const message = (get(trimmed.match(/message:([\s\S]*?)\n\n/i), 1) || '').trim();

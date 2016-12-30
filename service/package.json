@@ -4,7 +4,7 @@
   "description": "Logic and server for parsing and relaying Spot GPS messages",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "babel-tape-runner test/{,**/}*.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,9 @@
     "babel-core": "^6.21.0",
     "babel-plugin-transform-flow-strip-types": "^6.21.0",
     "babel-preset-es2015": "^6.18.0",
-    "flow-bin": "^0.37.4"
+    "babel-tape-runner": "^2.0.1",
+    "flow-bin": "^0.37.4",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
   }
 }
