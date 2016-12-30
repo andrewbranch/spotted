@@ -2,7 +2,7 @@
 
 import mongoose from 'mongoose';
 import type { ModelConstructor } from '../types/mongoose';
-import typeof { default as Recipient } from './recipient';
+import type { Recipient } from './recipient';
 import type { MessageType } from '../types/messageType';
 
 if (!mongoose.models.Rule) {

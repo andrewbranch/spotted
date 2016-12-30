@@ -9,8 +9,7 @@ if (!mongoose.models.Recipient) {
 
 export interface Recipient {
   name: string;
-  phone?: string;
-  email?: string;
+  phone: string;
   [key: string]: any;
 };
 
