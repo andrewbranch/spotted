@@ -18,6 +18,7 @@
   "homepage": "https://github.com/andrewbranch/spotted#readme",
   "dependencies": {
     "hapi": "^16.0.2",
+    "lodash": "^4.17.3",
     "mongoose": "^4.7.5",
     "twilio": "^2.11.1",
     "winston": "^2.3.0"
