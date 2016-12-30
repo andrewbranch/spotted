@@ -17,9 +17,10 @@ export default (server: any) => {
     path: '/message',
     handler: (request, reply) => {
       const emailText = get(request, 'payload.message.body-plain');
+      const emailSubject = get(request, 'payload.message.subject');
       if (emailText) {
         const response = reply().hold();
-        const message = parseMessage(emailText);
+        const message = parseMessage(emailText, emailSubject);
         matchRules(message).then(rules => Promise.all(rules.map(rule => (
           formatMessage(rule, message).then(messageString => (
             sendMessage(messageString, rule)
