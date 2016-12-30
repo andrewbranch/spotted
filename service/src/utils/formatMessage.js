@@ -18,7 +18,7 @@ const dms = (deg: number): [number, number, number] => {
 const formatDeg = (hemispheres: [string, string]) => (deg: number) => {
   const n = dms(deg);
   const hemi = hemispheres[deg > 0 ? 0 : 1];
-  return `${n[0]}° ${n[1]} ${n[2].toFixed(1)} ${hemi}`;
+  return `${n[0]}° ${n[1]}' ${n[2].toFixed(1)}" ${hemi}`;
 }
 
 const formatLat = formatDeg(['N', 'S']);
@@ -42,9 +42,9 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   ),
 };
 
-export default (rule: Model<PopulatedRule>, data: SpotData): Promise<string> => {
+export default (template: string, data: SpotData): Promise<string> => {
   return Promise.resolve(
-    rule.messageFormat.replace(/{([a-z]+?(:([a-z,]+?))?)}/ig, (input, token, __, params = '') => {
+    template.replace(/{([a-z]+?)(:([a-z,]+?))?}/ig, (input, token, __, params = '') => {
       const replacer = tokenReplacers[token];
       return replacer ? replacer(data, new Set(params.split(','))) : input;
     })
