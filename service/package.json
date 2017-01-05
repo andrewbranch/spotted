@@ -4,6 +4,7 @@
   "description": "Logic and server for parsing and relaying Spot GPS messages",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "babel-tape-runner test/{,**/}*.js | tap-spec"
   },
   "repository": {

@@ -19,12 +19,13 @@ if (!MONGO_HOST || !MONGO_PORT || !MONGO_USER || !MONGO_PASS || !MONGO_DB) {
 
 const MONGO_URI = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
 
+mongoose.model('Recipient', recipientSchema);
+logger.verbose('Registered Recipient Mongoose model');
+mongoose.model('Rule', ruleSchema);
+logger.verbose('Registered Rule Mongoose model');
+
 export default () => new Promise((resolve, reject) => {
   mongoose.connect(MONGO_URI, err => {
-    mongoose.model('Recipient', recipientSchema);
-    logger.verbose('Registered Recipient Mongoose model');
-    mongoose.model('Rule', ruleSchema);
-    logger.verbose('Registered Rule Mongoose model');
     return err ? reject(err) : resolve();
   });
 });
