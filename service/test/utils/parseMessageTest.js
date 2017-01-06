@@ -37,6 +37,13 @@ const custom: Email = {
   type: 'custom',
 };
 
+const bad: Email = {
+  headers: new Map(),
+  subject: 'Pictures from my vacation',
+  body: 'Thought you’d enjoy these photos of grizzly bears',
+  type: 'ok',
+}
+
 const runTests = (message: Email) => (t: tape$Context) => {
   const parsed = parseMessage(message.headers, message.body, message.subject);
   t.equal(parsed.time.toUTCString(), 'Fri, 30 Dec 2016 02:58:41 GMT', 'Parses date/time');
@@ -51,3 +58,7 @@ const runTests = (message: Email) => (t: tape$Context) => {
 tape('parseMessage: Check-in/OK', runTests(ok));
 tape('parseMessage: Custom', runTests(custom));
 tape('parseMessage: Help', runTests(help));
+tape('parseMessage: Failure Case', t => {
+  t.throws(parseMessage.bind(this, bad.headers, bad.body, bad.subject), /./, 'Throws an error when the email can’t be parsed');
+  t.end();
+});
