@@ -26,7 +26,6 @@ const formatLng = formatDeg(['E', 'W']);
 
 const tokenReplacers: { [key: string]: TokenReplacer } = {
   elapsedTime: data => moment(data.time).fromNow(),
-  timeZoneAbbr: data => data.timeZone,
   deviceName: data => data.deviceName,
   message: data => data.message,
   latitude: (data, params) => (

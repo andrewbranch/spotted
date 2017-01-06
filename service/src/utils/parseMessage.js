@@ -5,35 +5,30 @@ import type { SpotData } from '../types/spotData';
 import type { MessageType } from '../types/messageType';
 
 const subjectMessageTypeMap: { [key: string]: MessageType } = {
-  check: 'ok',
-  ok: 'ok',
-  help: 'help',
-  custom: 'custom',
+  'Check-in/OK': 'ok',
+  'Help': 'help',
+  'Custom': 'custom',
 };
 
-export default (body: string, subject: string): SpotData => {
+export default (
+  headers: Map<string, string>,
+  body: string,
+  subject: string
+): SpotData => {
   const trimmed = body.trim();
-  const lines = trimmed.split('\n');
-  const deviceName = lines[0].trim();
-  const latitude = get(trimmed.match(/latitude: *?(-?[0-9]+\.[0-9]+)/i), 1);
-  const longitude = get(trimmed.match(/longitude: *?(-?[0-9]+\.[0-9]+)/i), 1);
+  const deviceName = headers.get('X-Spot-Messenger') || '';
+  const latitude = parseFloat(headers.get('X-Spot-Latitude'));
+  const longitude = parseFloat(headers.get('X-Spot-Longitude'));
+  const time = new Date(parseInt(headers.get('X-Spot-Time')) * 1000);
+  const messageType = subjectMessageTypeMap[headers.get('X-Spot-Type') || ''];
   const message = (get(trimmed.match(/message:([\s\S]*?)\n\n/i), 1) || '').trim();
-  const dateInfo = trimmed.match(/[Dd]ate.*?: *?([-/.: 0-9]+? ([A-Z]{1,5}))/);
-  const messageType = subjectMessageTypeMap[
-    (get(subject.trim().match(/^[a-z]+/i), 0) || '').toLowerCase()
-  ];
-
-  const coordinates = [parseFloat(latitude), parseFloat(longitude)];
-  const time = dateInfo ? new Date(dateInfo[1]) : new Date();
-  const timeZone = dateInfo ? dateInfo[2] : '';
   
   return {
     time,
-    timeZone,
     deviceName,
-    coordinates,
     message,
     messageType,
+    coordinates: [latitude, longitude],
     fullText: trimmed,
   };
 };

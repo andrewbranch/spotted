@@ -16,20 +16,21 @@ export default (server: any) => {
     method: 'POST',
     path: '/message',
     handler: (request, reply) => {
-      const emailText = get(request, 'payload.message.body-plain');
-      const emailSubject = get(request, 'payload.message.subject');
-      if (emailText) {
+      const emailText = get(request, 'payload.body-plain');
+      const emailSubject = get(request, 'payload.subject');
+      const emailHeaders = get(request, 'payload.message-headers');
+      if (emailText && emailSubject && emailHeaders) {
         const response = reply().hold();
-        const message = parseMessage(emailText, emailSubject);
+        const message = parseMessage(new Map(JSON.parse(emailHeaders)), emailText, emailSubject);
         matchRules(message).then(rules => Promise.all(rules.map(rule => (
-          formatMessage(rule, message).then(messageString => (
+          formatMessage(rule.messageFormat, message).then(messageString => (
             sendMessage(messageString, rule)
           )).catch(logError)
         )))).then(() => {
           response.send();
         });
       } else {
-        logger.error('POST /message did not have a properly formatted payload');
+        logger.error('POST /message did not have a properly formatted payload', request.payload);
         reply(new Error('payload was missing not properly formatted'));
       }
     },

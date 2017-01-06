@@ -16,9 +16,8 @@ const data: SpotData = {
 };
 
 tape('formatMessage', async t => {
-  t.plan(10);
+  t.plan(9);
   t.equal(await formatMessage('{elapsedTime}', data), moment(data.time).fromNow(), 'elapsedTime token works');
-  t.equal(await formatMessage('{timeZoneAbbr}', data), data.timeZone, 'timeZoneAbbr token works');
   t.equal(await formatMessage('{deviceName}', data), data.deviceName, 'deviceName token works');
   t.equal(await formatMessage('{message}', data), data.message, 'message token works');
   t.equal(await formatMessage('{latitude}', data), '37.77402', 'latitude token works');
