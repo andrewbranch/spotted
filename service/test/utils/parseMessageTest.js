@@ -59,6 +59,10 @@ tape('parseMessage: Check-in/OK', runTests(ok));
 tape('parseMessage: Custom', runTests(custom));
 tape('parseMessage: Help', runTests(help));
 tape('parseMessage: Failure Case', t => {
-  t.throws(parseMessage.bind(this, bad.headers, bad.body, bad.subject), /./, 'Throws an error when the email can’t be parsed');
-  t.end();
+  t.plan(1);
+  t.throws(
+    parseMessage.bind(this, bad.headers, bad.body, bad.subject),
+    /was able to parse/i,
+    'Throws an error when the email can’t be parsed'
+  );
 });

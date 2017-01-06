@@ -18,15 +18,15 @@ export default (
 ): SpotData => {
   const trimmed = body.trim();
   const deviceName = headers.get('X-Spot-Messenger') || '';
-  assert.ok(deviceName);
+  assert.ok(deviceName, 'was able to parse deviceName');
   const latitude = parseFloat(headers.get('X-Spot-Latitude'));
-  assert.ok(latitude);
+  assert.ok(latitude, 'was able to parse latitude');
   const longitude = parseFloat(headers.get('X-Spot-Longitude'));
-  assert.ok(longitude);
+  assert.ok(longitude, 'was able to parse longitude');
   const time = new Date(parseInt(headers.get('X-Spot-Time')) * 1000);
   assert.ok(!isNaN(time.getTime()));
   const messageType = subjectMessageTypeMap[headers.get('X-Spot-Type') || ''];
-  assert.ok(messageType);
+  assert.ok(messageType, 'was able to parse messageType');
   const message = (get(trimmed.match(/message:([\s\S]*?)\n\n/i), 1) || '').trim();
   
   return {
