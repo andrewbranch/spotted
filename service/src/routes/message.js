@@ -27,11 +27,16 @@ export default (server: any, basePath: string) => {
           const message = parseMessage(new Map(JSON.parse(emailHeaders)), emailText, emailSubject);
           logger.silly('Parsed message:', message);
           logger.verbose('Finding matching rules...');
-          matchRules(message).then(rules => Promise.all(rules.map(rule => (
-            formatMessage(rule.messageFormat, message).then(messageString => (
-              sendMessage(messageString, rule)
-            )).catch(logError)
-          )))).then(() => {
+          matchRules(message).then(rules => Promise.all(rules.map(rule => {
+            logger.verbose(`Rule matched. Formatting ${rule.messageType} message for ${rule.recipients.length} recipients.`);
+            logger.silly(rule);
+            formatMessage(rule.messageFormat, message).then(messageString => {
+              logger.verbose('Formatted message');
+              logger.silly(messageString);
+              sendMessage(messageString, rule);
+            }).catch(logError);
+          }))).then(resolutions => {
+            logger.verbose(`Request complete. Sent ${resolutions.length} messages.`);
             response.send();
           });
         } catch (err) {

@@ -19,6 +19,7 @@ if (!MONGO_HOST || !MONGO_PORT || !MONGO_USER || !MONGO_PASS || !MONGO_DB) {
 
 const MONGO_URI = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
 
+mongoose.Promise = Promise;
 mongoose.model('Recipient', recipientSchema);
 logger.verbose('Registered Recipient Mongoose model');
 mongoose.model('Rule', ruleSchema);
