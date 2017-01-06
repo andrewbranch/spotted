@@ -11,10 +11,10 @@ const logError = (err: Error) => {
   logger.error(err.stack);
 };
 
-export default (server: any) => {
+export default (server: any, basePath: string) => {
   server.route({
     method: 'POST',
-    path: '/message',
+    path: `${basePath}/message`,
     handler: (request, reply) => {
       const emailText = get(request, 'payload.body-plain');
       const emailSubject = get(request, 'payload.subject');
@@ -22,7 +22,6 @@ export default (server: any) => {
       logger.verbose('Processing request...');
       if (emailText && emailSubject && emailHeaders) {
         const response = reply().hold();
-        
         try {
           logger.verbose('Parsing message...');
           const message = parseMessage(new Map(JSON.parse(emailHeaders)), emailText, emailSubject);
