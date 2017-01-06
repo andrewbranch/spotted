@@ -4,13 +4,7 @@ services:
     build: service
     ports:
       - 3000:3000
-    env_file: ./service/.env
-    environment:
-      - VIRTUAL_HOST=spotted.wheream.io
-      - VIRTUAL_PORT=3000
-      - LETSENCRYPT_HOST=spotted.wheream.io
-      - LETSENCRYPT_EMAIL=andrew@wheream.io
-      - LOG_LEVEL=silly
+    env_file: ./.env
   nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy

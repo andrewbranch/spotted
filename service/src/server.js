@@ -7,7 +7,7 @@ const BASE_PATH = '/api';
 
 export default () => new Promise((resolve, reject) => {
   const server = new Hapi.Server();
-  server.connection({ port: process.env.PORT });
+  server.connection({ port: process.env.VIRTUAL_PORT });
   messageRoute(server, BASE_PATH);
   statusRoute(server, BASE_PATH);
   server.start(err => {
