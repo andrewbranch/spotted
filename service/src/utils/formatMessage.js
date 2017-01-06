@@ -25,9 +25,11 @@ const formatLat = formatDeg(['N', 'S']);
 const formatLng = formatDeg(['E', 'W']);
 
 const tokenReplacers: { [key: string]: TokenReplacer } = {
-  elapsedTime: data => moment(data.time).fromNow(),
   deviceName: data => data.deviceName,
   message: data => data.message,
+  elapsedTime: data => (
+    data.time > Date.now() ? 'just now' : moment(data.time).fromNow()
+  ),
   latitude: (data, params) => (
     params.has('dms') ? formatLat(data.coordinates[0]) : data.coordinates[0].toString()
   ),
