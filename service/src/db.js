@@ -1,10 +1,6 @@
 /* @flow */
 
 import mongoose from 'mongoose';
-import recipientSchema from './schemas/recipient';
-import ruleSchema from './schemas/rule';
-import poiSchema from './schemas/poi';
-import logger from './logger';
 
 const {
   MONGO_HOST,
@@ -21,12 +17,6 @@ if (!MONGO_HOST || !MONGO_PORT || !MONGO_USER || !MONGO_PASS || !MONGO_DB) {
 const MONGO_URI = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
 
 mongoose.Promise = Promise;
-mongoose.model('Recipient', recipientSchema);
-logger.verbose('Registered Recipient Mongoose model');
-mongoose.model('Rule', ruleSchema);
-logger.verbose('Registered Rule Mongoose model');
-mongoose.model('POI', poiSchema);
-logger.verbose('Registered POI Mongoose model');
 
 export default () => new Promise((resolve, reject) => {
   mongoose.connect(MONGO_URI, err => {

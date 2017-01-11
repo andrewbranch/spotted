@@ -1,11 +1,9 @@
 /* @flow */
 
 import mongoose from 'mongoose';
+import recipientSchema from '../schemas/recipient';
+import logger from '../logger';
 import type { ModelConstructor } from '../types/mongoose';
-
-if (!mongoose.models.Recipient) {
-  throw new Error('Recipient model has not been registered yet');
-}
 
 export interface Recipient {
   name: string;
@@ -13,4 +11,5 @@ export interface Recipient {
   [key: string]: any;
 };
 
-export default (mongoose.models.Recipient: ModelConstructor<Recipient, Recipient>);
+export default (mongoose.model('Recipient', recipientSchema): ModelConstructor<Recipient, Recipient>);
+logger.verbose('Registered Recipient Mongoose model');

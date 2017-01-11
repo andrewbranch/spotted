@@ -1,11 +1,9 @@
 /* @flow */
 
 import mongoose from 'mongoose';
-import type { ModelConstructor } from '../types/mongoose';
-
-if (!mongoose.models.POI) {
-  throw new Error('POI model has not been registered yet');
-}
+import poiSchema from '../schemas/poi';
+import logger from '../logger';
+import type { ModelConstructor, Model } from '../types/mongoose';
 
 export interface POI {
   name: string;
@@ -15,4 +13,8 @@ export interface POI {
   };
 };
 
-export default (mongoose.models.POI: ModelConstructor<POI, POI>);
+export default (mongoose.model('POI', poiSchema): ModelConstructor<POI, POI> & {
+  near: (cooordinates: Coordinates, radius: number) => Promise<Model<POI>[]>
+});
+
+logger.verbose('Registered POI Mongoose model');
