@@ -3,9 +3,10 @@
 import type { Model } from '../types/mongoose';
 import type { PopulatedRule } from '../models/rule';
 import type { SpotData } from '../types/spotData';
+import POI from '../models/poi';
 import moment from 'moment-timezone';
 
-type TokenReplacer = (data: SpotData, params: Set<string>) => string;
+type TokenReplacer = (data: SpotData, params: Map<string, string>) => Promise<string>;
 
 const dms = (deg: number): [number, number, number] => {
   const degree = Math.abs(deg);
@@ -25,29 +26,42 @@ const formatLat = formatDeg(['N', 'S']);
 const formatLng = formatDeg(['E', 'W']);
 
 const tokenReplacers: { [key: string]: TokenReplacer } = {
-  deviceName: data => data.deviceName,
-  message: data => data.message,
-  elapsedTime: data => (
+  deviceName: data => Promise.resolve(data.deviceName),
+  message: data => Promise.resolve(data.message),
+  elapsedTime: data => Promise.resolve(
     data.time > Date.now() ? 'just now' : moment(data.time).fromNow()
   ),
-  latitude: (data, params) => (
+  latitude: (data, params) => Promise.resolve(
     params.has('dms') ? formatLat(data.coordinates[0]) : data.coordinates[0].toString()
   ),
-  longitude: (data, params) => (
+  longitude: (data, params) => Promise.resolve(
     params.has('dms') ? formatLng(data.coordinates[1]) : data.coordinates[1].toString()
   ),
-  coordinates: (data, params) => (
+  coordinates: (data, params) => Promise.resolve(
     params.has('dms')
       ? [formatLat(data.coordinates[0]), formatLng(data.coordinates[1])].join(' ')
       : [data.coordinates[0], data.coordinates[1]].join(', ')
   ),
+  // nearestPOI: (data, params) => (
+  //   POI.near(data.coordinates, 100)
+  // ),
 };
 
 export default (template: string, data: SpotData): Promise<string> => {
-  return Promise.resolve(
-    template.replace(/{([a-z]+?)(:([a-z,]+?))?}/ig, (input, token, __, params = '') => {
-      const replacer = tokenReplacers[token];
-      return replacer ? replacer(data, new Set(params.split(','))) : input;
-    })
-  );
+  let match;
+  const matcher = /{([a-z]+?)(:([a-z,]+?))?}/ig;
+  const replacements = [];
+  while (match = matcher.exec(template)) {
+    const [token, tokenName, , params = ''] = match;
+    const replacer = tokenReplacers[tokenName];
+    if (replacer) {
+      replacements.push(replacer(data, new Map(
+        params.split(',').map(pair => pair.split('='))
+      )).then(value => ({ token, value })));
+    }
+  }
+  
+  return Promise.all(replacements).then(reps => (
+    reps.reduce((result, rep) => result.replace(rep.token, rep.value), template)
+  ));
 };
