@@ -9,18 +9,20 @@ const radAbs = (x: number) => (
   x - floor(x / (2 * PI)) * 2 * PI
 );
 
-const greatCircleInitialCourse = (a: Coordinates, b: Coordinates) => {
-  const s = sin(rad(b[1] - a[1])) * cos(rad(b[0]));
-  const c = cos(rad(a[0])) * sin(rad(b[0])) - sin(rad(a[0])) * cos(rad(b[0])) * cos(rad(b[1] - a[1]));
-  return radAbs(2 * PI - (atan2(s, c) - PI / 2));
-};
+// Bearing is in degrees E of N
+const greatCircleInitialCourse = (a: Coordinates, b: Coordinates) => (
+  deg(radAbs(atan2(
+    sin(rad(b[1] - a[1])) * cos(rad(b[0])),
+    cos(rad(a[0])) * sin(rad(b[0])) - sin(rad(a[0])) * cos(rad(b[0])) * cos(rad(b[1] - a[1]))
+  )))
+);
 
 export const bearing = (a: Coordinates, b: Coordinates, precision: 2 | 3) => {
-  const d = deg(greatCircleInitialCourse(a, b));
+  const d = greatCircleInitialCourse(a, b);
   const interval = { '2': 45, '3': 22.5 };
   const headings = {
-    '2': ['E', 'NE', 'N', 'NW', 'W', 'SW', 'S', 'SE', 'E'],
-    '3': ['E', 'ENE', 'NE', 'NNE', 'N', 'NNW', 'NW', 'WNW', 'W', 'WSW', 'SW', 'SSW', 'S', 'SSE', 'SE', 'ESE', 'E'],
+    '2': ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'],
+    '3': ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N'],
   };
   
   for (let i = 0; i < headings[precision].length; i++) {
