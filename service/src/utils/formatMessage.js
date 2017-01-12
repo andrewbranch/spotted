@@ -31,16 +31,19 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   elapsedTime: data => Promise.resolve(
     data.time > Date.now() ? 'just now' : moment(data.time).fromNow()
   ),
-  latitude: (data, params) => Promise.resolve(
-    params.has('dms') ? formatLat(data.coordinates[0]) : data.coordinates[0].toString()
+  latitude: ({ coordinates }, params) => Promise.resolve(
+    params.has('dms') ? formatLat(coordinates[0]) : coordinates[0].toString()
   ),
-  longitude: (data, params) => Promise.resolve(
-    params.has('dms') ? formatLng(data.coordinates[1]) : data.coordinates[1].toString()
+  longitude: ({ coordinates }, params) => Promise.resolve(
+    params.has('dms') ? formatLng(coordinates[1]) : coordinates[1].toString()
   ),
-  coordinates: (data, params) => Promise.resolve(
+  coordinates: ({ coordinates }, params) => Promise.resolve(
     params.has('dms')
-      ? [formatLat(data.coordinates[0]), formatLng(data.coordinates[1])].join(' ')
-      : [data.coordinates[0], data.coordinates[1]].join(', ')
+      ? [formatLat(coordinates[0]), formatLng(coordinates[1])].join(' ')
+      : [coordinates[0], coordinates[1]].join(', ')
+  ),
+  googleMapsURL: ({ coordinates }, params) => Promise.resolve(
+    `https://www.google.com/maps/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`
   ),
   // nearestPOI: (data, params) => (
   //   POI.near(data.coordinates, 100)
@@ -49,7 +52,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
 
 export default (template: string, data: SpotData): Promise<string> => {
   let match;
-  const matcher = /{([a-z]+?)(:([a-z,]+?))?}/ig;
+  const matcher = /{([a-z]+?)(:([^}]+))?}/ig;
   const replacements = [];
   while (match = matcher.exec(template)) {
     const [token, tokenName, , params = ''] = match;
