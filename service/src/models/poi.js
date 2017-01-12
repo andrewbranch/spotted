@@ -7,10 +7,7 @@ import type { ModelConstructor, Model } from '../types/mongoose';
 
 export interface POI {
   name: string;
-  location: {
-    type: 'Point',
-    coordinates: [number, number]
-  };
+  coordinates: [number, number]
 };
 
 export default (mongoose.model('POI', poiSchema): ModelConstructor<POI, POI> & {

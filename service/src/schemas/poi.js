@@ -6,8 +6,8 @@ import type { Coordinates } from '../types/coordinates';
 const POISchema = mongoose.Schema({
   name: { type: String, required: true },
   location: {
-    type: { type: String, enum: 'Point', default: 'Point' },
-    coordinates: { type: [Number],   default: [0, 0] }
+    type: { type: String, enum: 'Point', default: 'Point', required: true },
+    coordinates: { type: [Number], required: true }
   },
 });
 
@@ -18,5 +18,10 @@ POISchema.statics.near = (coordinates: Coordinates, radius: number) => {
     maxDistance: radius,
   }).exec();
 };
+
+// Mongoose stores lat/lng backwards (i.e., [lng, lat])
+POISchema.virtual('coordinates').get(function () {
+  return [this.location.coordinates[1], this.location.coordinates[0]];
+});
 
 export default POISchema;
