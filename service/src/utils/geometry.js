@@ -26,7 +26,7 @@ export const bearing = (a: Coordinates, b: Coordinates, precision: 2 | 3) => {
   };
   
   for (let i = 0; i < headings[precision].length; i++) {
-    const t = interval[precision] * i + interval[precision] / 2;
+    const t = interval[precision] * (i + 0.5);
     if (d < t) return headings[precision][i];
   }
 }
