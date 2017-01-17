@@ -5,6 +5,8 @@ import type { Coordinates } from '../types/coordinates';
 
 const POISchema = mongoose.Schema({
   name: { type: String, required: true },
+  presenceRadius: { type: Number, required: true }, // in miles
+  preposition: { type: String, required: true }, // I am *in* San Francisco. I am *on* Mount Whitney. I am *at* home.
   location: {
     type: { type: String, enum: 'Point', default: 'Point', required: true },
     coordinates: { type: [Number], required: true }
@@ -12,10 +14,10 @@ const POISchema = mongoose.Schema({
 });
 
 POISchema.index({ location: '2dsphere' });
-POISchema.statics.near = (coordinates: Coordinates, radius: number) => {
+POISchema.statics.near = (coordinates: Coordinates, radiusMeters: number) => {
   return POISchema.where('location').near({
     center: { coordinates, type: 'Point' },
-    maxDistance: radius,
+    maxDistance: radiusMeters,
   }).exec();
 };
 

@@ -3,8 +3,10 @@
 import type { Model } from '../types/mongoose';
 import type { PopulatedRule } from '../models/rule';
 import type { SpotData } from '../types/spotData';
-import POI from '../models/poi';
 import moment from 'moment-timezone';
+import POI from '../models/poi';
+import * as geo from './geometry';
+import * as format from './formatters';
 
 type TokenReplacer = (data: SpotData, params: Map<string, string>) => Promise<string>;
 
@@ -45,9 +47,24 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   googleMapsURL: ({ coordinates }, params) => Promise.resolve(
     `https://www.google.com/maps/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`
   ),
-  // nearestPOI: (data, params) => (
-  //   POI.near(data.coordinates, 100)
-  // ),
+  nearestPOI: ({ coordinates }, params) => (
+    POI.near(coordinates, Infinity).then(pois => {
+      if (pois.length) {
+        const nearest = pois[0];
+        if (nearest) {
+          const distance = geo.distance(nearest.coordinates, coordinates);
+          if (distance <= nearest.presenceRadius) {
+            return `${params.get('prefix') || ''} ${nearest.preposition} ${nearest.name}`.trim();
+          }
+
+          const bearing = format.cardinalDirection(geo.greatCircleInitialCourse(nearest.coordinates, coordinates), 2);
+          return `${params.get('prefix') || ''} ${format.colloquialDistance(distance, 'mile', 'miles')} ${bearing} of ${nearest.name}`.trim();
+        }
+      }
+
+      return '';
+    })
+  ),
 };
 
 export default (template: string, data: SpotData): Promise<string> => {
