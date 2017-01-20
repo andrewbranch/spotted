@@ -2,7 +2,7 @@
 
 import type { Coordinates } from '../types/coordinates';
 const R_EARTH_MI = 3959;
-const { PI, sin, cos, tan, atan2, acos, floor } = Math;
+const { PI, sin, cos, tan, atan2, acos, floor, abs } = Math;
 
 const rad = (x: number) => x * PI / 180;
 const deg = (x: number) => x * 180 / PI;
@@ -19,6 +19,6 @@ export const greatCircleInitialCourse = (a: Coordinates, b: Coordinates) => (
 export const distance = (a: Coordinates, b: Coordinates) => (
   R_EARTH_MI * acos(
     sin(rad(a[0])) * sin(rad(b[0])) +
-    cos(rad(a[0])) * cos(rad(b[0])) * cos(rad(b[1] - a[1]))
+    cos(rad(a[0])) * cos(rad(b[0])) * cos(rad(abs(b[1] - a[1])))
   )
 );
