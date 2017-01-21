@@ -33,6 +33,8 @@ tape('formatMessage: simple tokens', async t => {
     'just now',
     'elapsedTime says “just now” for future times'
   );
+  
+  t.equal(await formatMessage('{latitude} and {longitude}', data), '37.77402 and -122.41721', 'multiple tokens are interpolated in templates');
   t.end();
 });
 
