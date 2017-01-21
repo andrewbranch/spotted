@@ -36,6 +36,7 @@
     "babel-tape-runner": "^2.0.1",
     "flow-bin": "^0.37.4",
     "tap-spec": "^4.1.1",
-    "tape": "^4.6.3"
+    "tape": "^4.6.3",
+    "testdouble": "^1.11.0"
   }
 }

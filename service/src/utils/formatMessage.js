@@ -47,8 +47,9 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   googleMapsURL: ({ coordinates }, params) => Promise.resolve(
     `https://www.google.com/maps/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`
   ),
-  nearestPOI: ({ coordinates }, params) => (
-    POI.near(coordinates, Infinity).then(pois => {
+  nearestPOI: ({ coordinates }, params) => {
+    const within = params.get('within');
+    return POI.near(coordinates, within ? parseFloat(within) : Infinity).then(pois => {
       if (pois.length) {
         const nearest = pois[0];
         if (nearest) {
@@ -63,8 +64,8 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
       }
 
       return '';
-    })
-  ),
+    });
+  },
 };
 
 export default (template: string, data: SpotData): Promise<string> => {

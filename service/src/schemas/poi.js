@@ -9,7 +9,7 @@ const POISchema = mongoose.Schema({
   preposition: { type: String, required: true }, // I am *in* San Francisco. I am *on* Mount Whitney. I am *at* home.
   location: {
     type: { type: String, enum: 'Point', default: 'Point', required: true },
-    coordinates: { type: [Number], required: true }
+    coordinates: { type: [Number], required: true },
   },
 });
 

@@ -3,7 +3,7 @@
 import type { SpotData } from '../../src/types/spotData';
 import tape from 'tape';
 import moment from 'moment-timezone';
-import formatMessage from '../../src/utils/formatMessage';
+import td, { when } from 'testdouble';
 
 const data: SpotData = {
   time: new Date('1/1/2016 12:00:00 PM PST'),
@@ -15,8 +15,7 @@ const data: SpotData = {
   fullText: '',
 };
 
-tape('formatMessage', async t => {
-  t.plan(12);
+tape('formatMessage: simple tokens', async t => {
   t.equal(await formatMessage('{elapsedTime}', data), moment(data.time).fromNow(), 'elapsedTime token works');
   t.equal(await formatMessage('{deviceName}', data), data.deviceName, 'deviceName token works');
   t.equal(await formatMessage('{message}', data), data.message, 'message token works');
@@ -34,4 +33,37 @@ tape('formatMessage', async t => {
     'just now',
     'elapsedTime says “just now” for future times'
   );
+  t.end();
+});
+
+const POI = td.replace('../../src/models/poi', { near: td.function('near') });
+const cityHallModel = {
+  name: 'City Hall',
+  presenceRadius: 1,
+  preposition: 'at',
+  location: {
+    type: 'Point',
+    coordinates: [-122.4214533, 37.7792639],
+  },
+  coordinates: [37.7792639, -122.4214533],
+};
+
+when(POI.near(data.coordinates, Infinity)).thenResolve([cityHallModel]);
+const data2 = Object.assign({}, data, { coordinates: [37.774021, -122.417211] });
+when(POI.near([37.774021, -122.417211], Infinity)).thenResolve([Object.assign({}, cityHallModel, {
+  presenceRadius: 0.1,
+})]);
+
+when(POI.near(data.coordinates, 10)).thenResolve([cityHallModel]);
+when(POI.near(data.coordinates, 0.1)).thenResolve([]);
+
+const formatMessage = require('../../src/utils/formatMessage').default;
+
+tape('formatMessage: {nearestPOI}', async t => {
+  t.equal(await formatMessage('{nearestPOI}', data), 'at City Hall', '{nearestPOI} works within presenceRadius');
+  t.equal(await formatMessage('{nearestPOI}', data2), '0.4 miles SE of City Hall', '{nearestPOI} works outside of presenceRadius');
+  t.equal(await formatMessage('{nearestPOI:prefix=They are}', data), 'They are at City Hall', '{nearestPOI} supports prefix param');
+  t.equal(await formatMessage('{nearestPOI:within=10}', data), 'at City Hall', '{nearestPOI} supports within param');
+  t.equal(await formatMessage('{nearestPOI:prefix=They are,within=0.1}', data), '', '{nearestPOI} resolves to empty string when nothing matches');
+  t.end();
 });
