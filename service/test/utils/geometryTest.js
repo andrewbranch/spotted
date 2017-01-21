@@ -35,4 +35,3 @@ tape('geometry: distance', t => {
   t.ok(isClose(distance(laptevSea, fortConger), 1540.509), 'Siberia to Greenland');
   t.end();
 });
-
