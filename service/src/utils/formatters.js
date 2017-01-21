@@ -3,8 +3,9 @@
 import article from 'indefinite-article';
 const { abs } = Math;
 
-export const cardinalDirection = (bearing: number, precision: 2 | 3): string => {
+export const cardinalDirection = (bearing: number, precision: 2 | 3, unabbreviate: 0 | 1 | 2 | 3 = 1) => {
   const interval = { '2': 45, '3': 22.5 };
+  const unabbreviated = { N: 'north', NNE: 'north-northeast', NE: 'northeast', ENE: 'east-northeast', E: 'east', ESE: 'east-southeast', SE: 'southeast', SSE: 'south-southeast', S: 'south', SSW: 'south-southwest', SW: 'southwest', WSW: 'west-southwest', W: 'west', WNW: 'west-northwest', NW: 'northwest', NNW: 'north-northwest' };
   const bearings = {
     '2': ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'],
     '3': ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW', 'N'],
@@ -12,7 +13,10 @@ export const cardinalDirection = (bearing: number, precision: 2 | 3): string => 
 
   for (let i = 0; i < bearings[precision].length; i++) {
     const t = interval[precision] * (i + 0.5);
-    if (bearing < t) return bearings[precision][i];
+    if (bearing < t) {
+      const abbr = bearings[precision][i];
+      return abbr.length > unabbreviate ? abbr : unabbreviated[abbr];
+    }
   }
 
   throw new Error(`Bearing must be a number in degrees between 0 and 360.`);
