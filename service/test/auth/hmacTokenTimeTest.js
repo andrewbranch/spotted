@@ -1,9 +1,11 @@
 import tk from 'timekeeper';
 import tape from 'tape';
 import td, { when, matchers, verify } from 'testdouble';
-import mailgunScheme from '../../src/auth/mailgun';
+import hmacTokenTimeScheme from '../../src/auth/hmacTokenTime';
 
-const { authenticate } = mailgunScheme();
+const { MAILGUN_API_KEY } = process.env;
+if (!MAILGUN_API_KEY) throw new Error('MAILGUN_API_KEY was missing from environment');
+const { authenticate } = hmacTokenTimeScheme(null, { key: MAILGUN_API_KEY });
 
 const missingHeaders = {};
 
@@ -26,7 +28,7 @@ reply.continue = td.function('continue');
 when(reply(), { ignoreExtraArgs: true }).thenResolve();
 when(reply.continue(), { ignoreExtraArgs: true }).thenResolve();
 
-tape('mailgun auth scheme', async t => {
+tape('hmacTokenTime auth scheme', async t => {
   await authenticate({ headers: missingHeaders }, reply);
   t.doesNotThrow(() => verify(reply(statusCode(400)), { times: 1 }), 'auth fails with 400 for missing headers');
   
