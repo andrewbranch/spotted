@@ -6,44 +6,35 @@ import RecipientTC from './recipient';
 import RuleTC from './rule';
 
 GQC.rootQuery().addFields({
-  poiById: PoiTC.getResolver('findById'),
-  poiByIds: PoiTC.getResolver('findByIds'),
-  poiOne: PoiTC.getResolver('findOne'),
-  poiMany: PoiTC.getResolver('findMany'),
-  poiTotal: PoiTC.getResolver('count'),
+  poi: PoiTC.getResolver('findById'),
+  pois: PoiTC.getResolver('findMany'),
+  poiCount: PoiTC.getResolver('count'),
   poiConnection: PoiTC.getResolver('connection'),
 
-  recipientById: RecipientTC.getResolver('findById'),
-  recipientByIds: RecipientTC.getResolver('findByIds'),
-  recipientOne: RecipientTC.getResolver('findOne'),
-  recipientMany: RecipientTC.getResolver('findMany'),
-  recipientTotal: RecipientTC.getResolver('count'),
+  recipient: RecipientTC.getResolver('findById'),
+  recipients: RecipientTC.getResolver('findMany'),
+  recipientCount: RecipientTC.getResolver('count'),
   recipientConnection: RecipientTC.getResolver('connection'),
 
-  ruleById: RuleTC.getResolver('findById'),
-  ruleByIds: RuleTC.getResolver('findByIds'),
-  ruleOne: RuleTC.getResolver('findOne'),
-  ruleMany: RuleTC.getResolver('findMany'),
-  ruleTotal: RuleTC.getResolver('count'),
+  rule: RuleTC.getResolver('findById'),
+  rules: RuleTC.getResolver('findMany'),
+  ruleCount: RuleTC.getResolver('count'),
   ruleConnection: RuleTC.getResolver('connection'),
 });
 
 GQC.rootMutation().addFields({
-  poiCreate: PoiTC.getResolver('createOne'),
-  poiUpdateById: PoiTC.getResolver('updateById'),
-  poiUpdateOne: PoiTC.getResolver('updateOne'),
-  poiRemoveById: PoiTC.getResolver('removeById'),
-  poiRemoveMany: PoiTC.getResolver('removeMany'),
+  createPOI: PoiTC.getResolver('createOne'),
+  updatePOI: PoiTC.getResolver('updateById'),
+  removePOI: PoiTC.getResolver('removeById'),
+  removePOIs: PoiTC.getResolver('removeMany'),
 
-  recipientCreate: RecipientTC.getResolver('createOne'),
-  recipientUpdateById: RecipientTC.getResolver('updateById'),
-  recipientUpdateOne: RecipientTC.getResolver('updateOne'),
+  createRecipient: RecipientTC.getResolver('createOne'),
+  updateRecipient: RecipientTC.getResolver('updateById'),
 
-  ruleCreate: RuleTC.getResolver('createOne'),
-  ruleUpdateById: RuleTC.getResolver('updateById'),
-  ruleUpdateOne: RuleTC.getResolver('updateOne'),
-  ruleRemoveById: RuleTC.getResolver('removeById'),
-  ruleRemoveMany: RuleTC.getResolver('removeMany'),
+  createRule: RuleTC.getResolver('createOne'),
+  updateRule: RuleTC.getResolver('updateById'),
+  removeRule: RuleTC.getResolver('removeById'),
+  removeRules: RuleTC.getResolver('removeMany'),
 });
 
 export default GQC.buildSchema();
