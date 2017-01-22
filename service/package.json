@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/andrewbranch/spotted#readme",
   "dependencies": {
+    "boom": "^4.2.0",
     "hapi": "^16.0.2",
     "indefinite-article": "0.0.2",
     "lodash": "^4.17.3",
