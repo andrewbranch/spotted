@@ -7,8 +7,6 @@ if (!MAILGUN_API_KEY) {
   throw new Error('MAILGUN_API_KEY was missing from environment');
 }
 
-const hmac = createHmac('sha256', MAILGUN_API_KEY);
-
 export default () => ({
   authenticate(request, reply) {
     logger.verbose('Authenticating request with mailgun scheme...');
@@ -17,6 +15,11 @@ export default () => ({
       return reply(badRequest('Authentication headers missing'));
     }
 
+    if (Date.now() - parseInt(timestamp) * 1000 > 30 * 1000) {
+      return reply(badRequest('Request timestamp is too old'));
+    }
+
+    const hmac = createHmac('sha256', MAILGUN_API_KEY);
     hmac.update(`${timestamp}${token}`);
     if (hmac.digest('hex') !== signature) {
       return reply(unauthorized('Authentication token was invalid'));
