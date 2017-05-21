@@ -7,6 +7,7 @@ export default (_, options) => ({
     logger.verbose('Authenticating request with mailgun scheme...');
     const { signature, timestamp, token } = request.headers;
     if (!signature || !timestamp || !token) {
+      logger.verbose('Authentication headers missing. Included headers were:', request.headers);
       return reply(badRequest('Authentication headers missing'));
     }
 
