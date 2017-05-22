@@ -23,7 +23,7 @@ export default () => new Promise((resolve, reject) => {
   const server = new Hapi.Server();
   server.connection({ port: process.env.VIRTUAL_PORT });
   server.auth.scheme('hmac-token-time', hmacTokenTimeScheme);
-  server.auth.strategy('mailgun', 'hmac-token-time', { key: MAILGUN_API_KEY });
+  server.auth.strategy('mailgun', 'hmac-token-time', { key: MAILGUN_API_KEY, payload: true });
   server.auth.strategy('internal', 'hmac-token-time', { key: INTERNAL_API_KEY });
   messageRoute(server, API_PATH);
   statusRoute(server, API_PATH);
