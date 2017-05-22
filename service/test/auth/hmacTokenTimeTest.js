@@ -40,7 +40,7 @@ tape('hmacTokenTime auth scheme', async t => {
   
   tk.travel(parseInt(validHeaders.timestamp) * 1000);
   await authenticate({ headers: validHeaders }, reply);
-  t.doesNotThrow(() => verify(reply.continue({ credentials: null })), 'auth succeeds with valid headers');
+  t.doesNotThrow(() => verify(reply.continue({ credentials: {} })), 'auth succeeds with valid headers');
   tk.reset();
   t.end();
 });
