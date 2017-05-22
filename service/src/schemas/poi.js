@@ -16,7 +16,7 @@ const POISchema = mongoose.Schema({
 POISchema.index({ location: '2dsphere' });
 POISchema.statics.near = function(coordinates: Coordinates, radiusMeters: number) {
   return this.where('location').near({
-    center: { coordinates: coordinates.reverse(), type: 'Point' },
+    center: { coordinates: [coordinates[1], coordinates[0]], type: 'Point' },
     maxDistance: radiusMeters,
   }).exec();
 };
