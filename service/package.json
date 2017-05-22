@@ -28,7 +28,7 @@
     "indefinite-article": "0.0.2",
     "lodash": "^4.17.3",
     "moment-timezone": "^0.5.11",
-    "mongoose": "^4.7.7",
+    "mongoose": "^4.10.1",
     "twilio": "^2.11.1",
     "winston": "^2.3.0"
   },
