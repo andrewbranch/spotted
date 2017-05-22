@@ -1,10 +1,9 @@
 import get from 'lodash/get';
-import ary from 'lodash/ary';
 import { createHmac } from 'crypto';
 import { badRequest, unauthorized } from 'boom';
 import logger from '../logger';
 
-const authenticate = ({ signature, timestamp, token }, reply, key) => {
+const authenticate = ({ signature, timestamp, token }, reply, key, ...continueArgs) => {
   logger.verbose('Authenticating request with mailgun scheme...');
   if (!signature || !timestamp || !token) {
     return reply(badRequest('Authentication headers missing'));
@@ -21,19 +20,19 @@ const authenticate = ({ signature, timestamp, token }, reply, key) => {
   }
 
   logger.verbose('Successfully authenticated request with mailgun scheme');
-  return reply(null, null, { credentials: {} });
+  return reply.continue(...continueArgs);
 };
 
 export default (_, options) => {
   if (options.payload) {
     return {
       authenticate: (request, reply) => reply.continue({ credentials: {} }),
-      payload: (request, reply) => authenticate(request.payload || {}, ary(reply, 2), options.key),
+      payload: (request, reply) => authenticate(request.payload || {}, reply, options.key),
       options: { payload: true }
     };
   }
 
   return {
-    authenticate: (request, reply) => authenticate(request.headers, reply, options.key)
+    authenticate: (request, reply) => authenticate(request.headers, reply, options.key, { credentials: {} })
   };
 }
