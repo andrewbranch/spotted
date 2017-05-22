@@ -45,7 +45,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
       : [coordinates[0], coordinates[1]].join(', ')
   ),
   googleMapsURL: ({ coordinates }, params) => Promise.resolve(
-    `https://www.google.com/maps/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`
+    `https://www.google.com/maps/place/${coordinates[0]}+${coordinates[1]}/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`
   ),
   nearestPOI: ({ coordinates }, params) => {
     const within = params.get('within');
