@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import ary from 'lodash/ary';
 import { createHmac } from 'crypto';
 import { badRequest, unauthorized } from 'boom';
 import logger from '../logger';
@@ -20,14 +21,14 @@ const authenticate = ({ signature, timestamp, token }, reply, key) => {
   }
 
   logger.verbose('Successfully authenticated request with mailgun scheme');
-  return reply.continue({ credentials: null });
+  return reply(null, null, { credentials: {} });
 };
 
 export default (_, options) => {
   if (options.payload) {
     return {
-      authenticate: (request, reply) => reply.continue({ credentials: null }),
-      payload: (request, reply) => authenticate(request.payload, reply, options.key),
+      authenticate: (request, reply) => reply.continue({ credentials: {} }),
+      payload: (request, reply) => authenticate(request.payload || {}, ary(reply, 2), options.key),
       options: { payload: true }
     };
   }
