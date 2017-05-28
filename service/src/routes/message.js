@@ -1,6 +1,8 @@
 /* @flow */
 
 import get from 'lodash/get';
+import flatten from 'lodash/flatten';
+import compact from 'lodash/compact';
 import parseMessage from '../utils/parseMessage';
 import formatMessage from '../utils/formatMessage';
 import matchRules from '../utils/matchRules';
@@ -9,6 +11,7 @@ import logger from '../logger';
 
 const logError = (err: Error) => {
   logger.error(err.stack);
+  return err;
 };
 
 const fail = (err: Error, response: any) => {
@@ -40,19 +43,20 @@ export default (server: any, basePath: string) => {
               return Promise.all(rules.map(rule => {
                 logger.verbose(`Rule matched. Formatting ${rule.messageType} message for ${rule.recipients.length} recipients.`);
                 logger.silly(rule);
-                return formatMessage(rule.messageFormat, message).then(messageString => {
+                return Promise.all(rule.recipients.map(recipient => formatMessage(rule.messageFormat, recipient, message).then(messageString => {
                   logger.verbose('Formatted message');
                   logger.silly(messageString);
-                  return sendMessage(messageString, rule);
-                }).catch(logError);
-              })).then(() => {
-                const messageCount = rules.reduce((n, rule) => n + rule.recipients.length, 0);
-                logger.verbose(`Request complete. Sent ${messageCount} messages.`);
+                  return sendMessage(messageString, recipient);
+                }).catch(logError)));
+              })).then(resolutions => {
+                const attemptedMessages = flatten(resolutions);
+                const errors = compact(attemptedMessages);
+                logger.verbose(`Request complete. Sent ${attemptedMessages.length - errors.length} messages, and failed to send ${errors.length} messages.`);
                 response.send();
               });
             }).catch(err => {
               fail(err, response);
-            })
+            });
           } catch (err) {
             fail(err, response);
           }

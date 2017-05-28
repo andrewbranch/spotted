@@ -1,0 +1,4 @@
+[ignore]
+./node_modules/graphql-compose-connection/*
+./node_modules/graphql-compose/*
+./node_modules/graphql-compose-mongoose/*

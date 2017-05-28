@@ -2,6 +2,7 @@
 
 import type { Model } from '../types/mongoose';
 import type { PopulatedRule } from '../models/rule';
+import type { Recipient } from '../models/recipient';
 import type { SpotData } from '../types/spotData';
 import moment from 'moment-timezone';
 import POI from '../models/poi';
@@ -33,20 +34,21 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   elapsedTime: data => Promise.resolve(
     data.time > Date.now() ? 'just now' : moment(data.time).fromNow()
   ),
-  latitude: ({ coordinates }, params) => Promise.resolve(
+  latitude: ({ coordinates }, _, params) => Promise.resolve(
     params.has('dms') ? formatLat(coordinates[0]) : coordinates[0].toString()
   ),
-  longitude: ({ coordinates }, params) => Promise.resolve(
+  longitude: ({ coordinates }, _, params) => Promise.resolve(
     params.has('dms') ? formatLng(coordinates[1]) : coordinates[1].toString()
   ),
-  coordinates: ({ coordinates }, params) => Promise.resolve(
+  coordinates: ({ coordinates }, _, params) => Promise.resolve(
     params.has('dms')
       ? [formatLat(coordinates[0]), formatLng(coordinates[1])].join(' ')
       : [coordinates[0], coordinates[1]].join(', ')
   ),
-  googleMapsURL: ({ coordinates }, params) => Promise.resolve(
-    `https://www.google.com/maps/place/${coordinates[0]}+${coordinates[1]}/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`
-  ),
+  mapsURL: ({ coordinates }, { preferences }, params) => Promise.resolve({
+    Google: `https://www.google.com/maps/place/${coordinates[0]}+${coordinates[1]}/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`,
+    Apple: `https://maps.apple.com/?q=${coordinates[0]},${coordinates[1]}&sll=${coordinates[0]},${coordinates[1]}&z=${params.get('zoom') || '10'}`
+  }[preferences.mapsProvider]),
   nearestPOI: ({ coordinates }, params) => {
     const within = params.get('within');
     return POI.near(coordinates, within ? parseFloat(within) : Infinity).then(pois => {
@@ -68,7 +70,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   },
 };
 
-export default (template: string, data: SpotData): Promise<string> => {
+export default (template: string, data: SpotData, recipient: Recipient): Promise<string> => {
   let match;
   const matcher = /{([a-z]+?)(:([^}]+))?}/ig;
   const replacements = [];
@@ -76,7 +78,7 @@ export default (template: string, data: SpotData): Promise<string> => {
     const [token, tokenName, , params = ''] = match;
     const replacer = tokenReplacers[tokenName];
     if (replacer) {
-      replacements.push(replacer(data, new Map(
+      replacements.push(replacer(data, recipient, new Map(
         params.split(',').map(pair => pair.split('='))
       )).then(value => ({ token, value })));
     }

@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { PopulatedRule } from '../models/rule';
+import type { Recipient } from '../models/recipient';
 import type { Model } from '../types/mongoose';
 import twilio from 'twilio';
 
@@ -11,8 +11,8 @@ if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE) {
 
 const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
-export default (message: string, rule: Model<PopulatedRule>): Promise<mixed> => {
-  return Promise.all(rule.recipients.map(recipient => new Promise((resolve, reject) => {
+export default (message: string, recipient: Model<Recipient>): Promise<mixed> => {
+  return new Promise((resolve, reject) => {
     client.sendMessage({
       to: recipient.phone,
       from: TWILIO_PHONE,
@@ -20,5 +20,5 @@ export default (message: string, rule: Model<PopulatedRule>): Promise<mixed> => 
     }, err => {
       return err ? reject(err) : resolve();
     });
-  })));
+  });
 };
