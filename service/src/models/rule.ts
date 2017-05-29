@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import { Document, Schema, model } from 'mongoose';
 import ruleSchema from '../schemas/rule';
 import logger from '../logger';
 import { Recipient } from './recipient';
@@ -15,5 +15,5 @@ export interface PopulatedRule extends Rule {
   recipients: Recipient[];
 };
 
-export default mongoose.model<Rule & Document>('Rule', ruleSchema);
+export default model<Rule & Document>('Rule', ruleSchema);
 logger.verbose('Registered Rule Mongoose model');

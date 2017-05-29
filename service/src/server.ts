@@ -1,5 +1,5 @@
-import Hapi from 'hapi';
-import GraphQL from 'hapi-graphql';
+import { Server } from 'hapi';
+import * as GraphQL from 'hapi-graphql';
 import RootSchema from './graphql/root';
 import messageRoute from './routes/message';
 import statusRoute from './routes/status';
@@ -17,8 +17,10 @@ if (!INTERNAL_API_KEY) {
   throw new Error('INTERNAL_API_KEY was missing from environment');
 }
 
-export default () => new Promise<Hapi.Server>((resolve, reject) => {
-  const server = new Hapi.Server();
+process.on('unhandledRejection', err => console.log(err.stack));
+
+export default () => new Promise<Server>((resolve, reject) => {
+  const server = new Server();
   server.connection({ port: process.env.VIRTUAL_PORT });
   server.auth.scheme('hmac-token-time', hmacTokenTimeScheme);
   server.auth.strategy('mailgun', 'hmac-token-time', { key: MAILGUN_API_KEY, payload: true });

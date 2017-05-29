@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import{ Document, model } from 'mongoose';
 import recipientSchema from '../schemas/recipient';
 import logger from '../logger';
 
@@ -10,5 +10,5 @@ export interface Recipient {
   }
 }
 
-export default mongoose.model<Recipient & Document>('Recipient', recipientSchema);
+export default model<Recipient & Document>('Recipient', recipientSchema);
 logger.verbose('Registered Recipient Mongoose model');

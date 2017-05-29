@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import { get } from 'lodash';
 import { createHmac } from 'crypto';
 import { badRequest, unauthorized } from 'boom';
 import logger from '../logger';

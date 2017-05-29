@@ -4,8 +4,9 @@
   "description": "Logic and server for parsing and relaying Spot GPS messages",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "LOG_LEVEL=silent babel-tape-runner test/{,**/}*.js | tap-spec"
+    "start": "node dist/src/index.js",
+    "test": "LOG_LEVEL=silent babel-tape-runner test/{,**/}*.js | tap-spec",
+    "build": "tsc && cp package.json dist/"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "@types/hapi": "^16.1.2",
     "@types/lodash": "^4.14.64",
     "@types/mongoose": "^4.7.13",
+    "@types/node": "^7.0.22",
     "@types/tape": "^4.2.30",
     "@types/twilio": "^0.0.8",
     "@types/winston": "^2.3.2",

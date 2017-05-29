@@ -1,5 +1,5 @@
-import get from 'lodash/get';
-import assert from 'assert';
+import { get } from 'lodash';
+import * as assert from 'assert';
 import { SpotData } from '../types/spotData';
 import { MessageType } from '../types/messageType';
 

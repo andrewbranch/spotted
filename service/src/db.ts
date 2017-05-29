@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 const {
   MONGO_HOST,
@@ -14,7 +14,7 @@ if (!MONGO_HOST || !MONGO_PORT || !MONGO_USER || !MONGO_PASS || !MONGO_DB) {
 
 const MONGO_URI = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
 
-mongoose.Promise = Promise;
+(<any>mongoose).Promise = Promise;
 
 export default () => new Promise((resolve, reject) => {
   mongoose.connect(MONGO_URI, err => {

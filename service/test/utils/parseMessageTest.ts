@@ -1,9 +1,9 @@
+import * as tape from 'tape';
+import * as fs from 'fs';
+import * as path from 'path';
 import { SpotData } from '../../src/types/spotData';
 import { MessageType } from '../../src/types/messageType';
-import tape from 'tape';
 import parseMessage from '../../src/utils/parseMessage';
-import fs from 'fs';
-import path from 'path';
 
 type Email = {
   headers: Map<string, string>;

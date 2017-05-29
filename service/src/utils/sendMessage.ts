@@ -1,5 +1,5 @@
 import { Recipient } from '../models/recipient';
-import twilio from 'twilio';
+import * as twilio from 'twilio';
 
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE } = process.env;
 if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE) {

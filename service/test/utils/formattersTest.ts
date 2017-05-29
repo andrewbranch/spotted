@@ -1,5 +1,5 @@
 import { Colloquialism } from '../../src/utils/formatters';
-import tape from 'tape';
+import * as tape from 'tape';
 import { cardinalDirection, colloquialDistance } from '../../src/utils/formatters';
 
 tape('formatters: cardinalDirection (2)', t => {

@@ -1,6 +1,5 @@
-import get from 'lodash/get';
-import flatten from 'lodash/flatten';
-import compact from 'lodash/compact';
+import { get, flatten, compact } from 'lodash';
+import { Server } from 'hapi';
 import parseMessage from '../utils/parseMessage';
 import formatMessage from '../utils/formatMessage';
 import matchRules from '../utils/matchRules';
@@ -19,29 +18,29 @@ const fail = (err: Error, response: any) => {
   response.send();
 };
 
-export default (server: any, basePath: string) => {
+export default (server: Server, basePath: string) => {
   server.route({
     method: 'POST',
     path: `${basePath}/message`,
     config: {
       auth: 'mailgun',
       handler: (request, reply) => {
-        const emailText = get(request, 'payload.body-plain');
-        const emailSubject = get(request, 'payload.subject');
-        const emailHeaders = get(request, 'payload.message-headers');
+        const emailText = get<string>(request, 'payload.body-plain');
+        const emailSubject = get<string>(request, 'payload.subject');
+        const emailHeaders = get<string>(request, 'payload.message-headers');
         logger.verbose('Processing request...');
         if (emailText && emailSubject && emailHeaders) {
           const response = reply().hold();
           try {
             logger.verbose('Parsing message...');
-            const message = parseMessage(new Map(JSON.parse(emailHeaders)), emailText, emailSubject);
+            const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText, emailSubject);
             logger.silly('Parsed message:', message);
             logger.verbose('Finding matching rules...');
             matchRules(message).then(rules => {
               return Promise.all(rules.map(rule => {
                 logger.verbose(`Rule matched. Formatting ${rule.messageType} message for ${rule.recipients.length} recipients.`);
-                logger.silly(rule);
-                return Promise.all(rule.recipients.map(recipient => formatMessage(rule.messageFormat, recipient, message).then(messageString => {
+                logger.silly('Rule:', rule);
+                return Promise.all(rule.recipients.map(recipient => formatMessage(rule.messageFormat, message, recipient).then(messageString => {
                   logger.verbose('Formatted message');
                   logger.silly(messageString);
                   return sendMessage(messageString, recipient);

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import { Coordinates } from '../types/coordinates';
 
 const POISchema = new mongoose.Schema({

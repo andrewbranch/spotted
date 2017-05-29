@@ -1,5 +1,5 @@
 import { Coordinates } from '../../src/types/coordinates';
-import tape from 'tape';
+import * as tape from 'tape';
 import { greatCircleInitialCourse, distance } from '../../src/utils/geometry';
 
 const sf: Coordinates = [37.7573683, -122.7177862];

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import { MessageType } from '../types/messageType';
 const { ObjectId } = mongoose.Schema.Types;
 const messageTypes: MessageType[] = ['ok', 'custom', 'help'];

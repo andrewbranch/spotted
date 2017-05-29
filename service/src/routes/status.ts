@@ -1,4 +1,4 @@
-import packageJSON from '../../package.json';
+const packageJSON = require('../../package.json');
 
 export default (server: any, basePath: string) => {
   server.route({

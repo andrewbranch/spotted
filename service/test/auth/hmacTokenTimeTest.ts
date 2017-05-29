@@ -1,6 +1,6 @@
-import tk from 'timekeeper';
-import tape from 'tape';
-import td, { when, matchers, verify } from 'testdouble';
+import * as tk from 'timekeeper';
+import * as tape from 'tape';
+import { when, matchers, verify, function as fn } from 'testdouble';
 import hmacTokenTimeScheme from '../../src/auth/hmacTokenTime';
 
 const { MAILGUN_API_KEY } = process.env;
@@ -22,11 +22,11 @@ const validHeaders = {
 };
 
 const statusCode = code => matchers.argThat(x => x.output.statusCode === code);
-const reply = td.function('reply');
-reply.continue = td.function('continue');
+const reply = fn('reply') as Function & { continue: Function };
+reply.continue = fn('continue');
 
-when(reply(), { ignoreExtraArgs: true }).thenResolve();
-when(reply.continue(), { ignoreExtraArgs: true }).thenResolve();
+when(reply(), { ignoreExtraArgs: true }).thenResolve(null);
+when(reply.continue(), { ignoreExtraArgs: true }).thenResolve(null);
 
 tape('hmacTokenTime auth scheme', async t => {
   await authenticate({ headers: missingHeaders }, reply);
