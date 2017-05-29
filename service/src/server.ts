@@ -17,7 +17,7 @@ if (!INTERNAL_API_KEY) {
   throw new Error('INTERNAL_API_KEY was missing from environment');
 }
 
-export default () => new Promise((resolve, reject) => {
+export default () => new Promise<Hapi.Server>((resolve, reject) => {
   const server = new Hapi.Server();
   server.connection({ port: process.env.VIRTUAL_PORT });
   server.auth.scheme('hmac-token-time', hmacTokenTimeScheme);

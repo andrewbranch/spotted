@@ -25,7 +25,7 @@ export default (
   assert.ok(!isNaN(time.getTime()));
   const messageType = subjectMessageTypeMap[headers.get('X-Spot-Type') || ''];
   assert.ok(messageType, 'was able to parse messageType');
-  const message = (get(trimmed.match(/message:([\s\S]*?)\n\n/i), 1) || '').trim();
+  const message = (get<string>(trimmed.match(/message:([\s\S]*?)\n\n/i), 1) || '').trim();
   
   return {
     time,

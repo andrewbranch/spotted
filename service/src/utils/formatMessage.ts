@@ -1,4 +1,3 @@
-import { Model } from '../types/mongoose';
 import { PopulatedRule } from '../models/rule';
 import { Recipient } from '../models/recipient';
 import { SpotData } from '../types/spotData';
@@ -7,7 +6,7 @@ import POI from '../models/poi';
 import * as geo from './geometry';
 import * as format from './formatters';
 
-type TokenReplacer = (data: SpotData, params: Map<string, string>) => Promise<string>;
+type TokenReplacer = (data: SpotData, recipient: Recipient, params: Map<string, string>) => Promise<string>;
 
 const dms = (deg: number): [number, number, number] => {
   const degree = Math.abs(deg);
@@ -30,7 +29,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   deviceName: data => Promise.resolve(data.deviceName),
   message: data => Promise.resolve(data.message),
   elapsedTime: data => Promise.resolve(
-    data.time > Date.now() ? 'just now' : moment(data.time).fromNow()
+    data.time.getTime() > Date.now() ? 'just now' : moment(data.time).fromNow()
   ),
   latitude: ({ coordinates }, _, params) => Promise.resolve(
     params.has('dms') ? formatLat(coordinates[0]) : coordinates[0].toString()
@@ -47,7 +46,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
     Google: `https://www.google.com/maps/place/${coordinates[0]}+${coordinates[1]}/@${coordinates[0]},${coordinates[1]},${params.get('zoom') || '10'}z`,
     Apple: `https://maps.apple.com/?q=${coordinates[0]},${coordinates[1]}&sll=${coordinates[0]},${coordinates[1]}&z=${params.get('zoom') || '10'}`
   }[preferences.mapsProvider]),
-  nearestPOI: ({ coordinates }, params) => {
+  nearestPOI: ({ coordinates }, _, params) => {
     const within = params.get('within');
     return POI.near(coordinates, within ? parseFloat(within) : Infinity).then(pois => {
       if (pois.length) {
@@ -77,7 +76,7 @@ export default (template: string, data: SpotData, recipient: Recipient): Promise
     const replacer = tokenReplacers[tokenName];
     if (replacer) {
       replacements.push(replacer(data, recipient, new Map(
-        params.split(',').map(pair => pair.split('='))
+        params.split(',').map(pair => pair.split('=') as [string, string])
       )).then(value => ({ token, value })));
     }
   }

@@ -1,18 +1,14 @@
-import mongoose from 'mongoose';
-import poiSchema from '../schemas/poi';
+import mongoose, { Document, Model } from 'mongoose';
+import poiSchema, { statics } from '../schemas/poi';
 import logger from '../logger';
 import { Coordinates } from '../types/coordinates';
-import { ModelConstructor, Model } from '../types/mongoose';
 
 export interface POI {
   name: string;
   presenceRadius: number;
   preposition: string;
-  coordinates: [number, number];
+  coordinates: Coordinates;
 };
 
-export default (mongoose.model('POI', poiSchema): ModelConstructor<POI, POI> & {
-  near: (cooordinates: Coordinates, radiusMeters: number) => Promise<Model<POI>[]>
-});
-
+export default mongoose.model<POI & Document>('POI', poiSchema) as Model<POI & Document> & typeof statics;
 logger.verbose('Registered POI Mongoose model');

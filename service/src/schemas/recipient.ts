@@ -3,7 +3,7 @@ import { MapsProvider } from '../types/mapsProvider';
 const mapsProviders: MapsProvider[] = ['Apple', 'Google'];
 const defaultMapsProvider: MapsProvider = 'Google';
 
-export default mongoose.Schema({
+export default new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   preferences: {

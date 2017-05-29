@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Coordinates } from '../types/coordinates';
 
-const POISchema = mongoose.Schema({
+const POISchema = new mongoose.Schema({
   name: { type: String, required: true },
   presenceRadius: { type: Number, required: true }, // in miles
   preposition: { type: String, required: true }, // I am *in* San Francisco. I am *on* Mount Whitney. I am *at* home.
@@ -11,13 +11,17 @@ const POISchema = mongoose.Schema({
   },
 });
 
-POISchema.index({ location: '2dsphere' });
-POISchema.statics.near = function(coordinates: Coordinates, radiusMeters: number) {
-  return this.where('location').near({
-    center: { coordinates: [coordinates[1], coordinates[0]], type: 'Point' },
-    maxDistance: radiusMeters,
-  }).exec();
+export const statics = {
+  near: function(coordinates: Coordinates, radiusMeters: number) {
+    return this.where('location').near({
+      center: { coordinates: [coordinates[1], coordinates[0]], type: 'Point' },
+      maxDistance: radiusMeters,
+    }).exec();
+  }
 };
+
+POISchema.index({ location: '2dsphere' });
+Object.assign(POISchema.statics, statics);
 
 // Mongoose stores lat/lng backwards (i.e., [lng, lat])
 POISchema.virtual('coordinates').get(function () {

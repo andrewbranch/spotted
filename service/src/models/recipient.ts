@@ -1,13 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import recipientSchema from '../schemas/recipient';
 import logger from '../logger';
-import { ModelConstructor } from '../types/mongoose';
 
 export interface Recipient {
   name: string;
   phone: string;
-  [key: string]: any;
-};
+  preferences: {
+    [key: string]: any;
+  }
+}
 
-export default (mongoose.model('Recipient', recipientSchema): ModelConstructor<Recipient, Recipient>);
+export default mongoose.model<Recipient & Document>('Recipient', recipientSchema);
 logger.verbose('Registered Recipient Mongoose model');
