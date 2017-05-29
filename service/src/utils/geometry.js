@@ -1,6 +1,4 @@
-/* @flow */
-
-import type { Coordinates } from '../types/coordinates';
+import { Coordinates } from '../types/coordinates';
 const R_EARTH_MI = 3959;
 const { PI, sin, cos, tan, atan2, acos, floor, abs } = Math;
 

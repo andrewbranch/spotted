@@ -1,9 +1,7 @@
-/* @flow */
-
 import get from 'lodash/get';
 import assert from 'assert';
-import type { SpotData } from '../types/spotData';
-import type { MessageType } from '../types/messageType';
+import { SpotData } from '../types/spotData';
+import { MessageType } from '../types/messageType';
 
 const subjectMessageTypeMap: { [key: string]: MessageType } = {
   'Check-in/OK': 'ok',

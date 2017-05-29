@@ -1,7 +1,5 @@
-/* @flow */
-
-import type { SpotData } from '../../src/types/spotData';
-import type { MessageType } from '../../src/types/messageType';
+import { SpotData } from '../../src/types/spotData';
+import { MessageType } from '../../src/types/messageType';
 import tape from 'tape';
 import parseMessage from '../../src/utils/parseMessage';
 import fs from 'fs';

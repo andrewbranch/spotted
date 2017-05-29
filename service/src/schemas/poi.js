@@ -1,7 +1,5 @@
-/* @flow */
-
 import mongoose from 'mongoose';
-import type { Coordinates } from '../types/coordinates';
+import { Coordinates } from '../types/coordinates';
 
 const POISchema = mongoose.Schema({
   name: { type: String, required: true },

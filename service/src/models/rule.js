@@ -1,11 +1,9 @@
-/* @flow */
-
 import mongoose from 'mongoose';
 import ruleSchema from '../schemas/rule';
 import logger from '../logger';
-import type { ModelConstructor } from '../types/mongoose';
-import type { Recipient } from './recipient';
-import type { MessageType } from '../types/messageType';
+import { ModelConstructor } from '../types/mongoose';
+import { Recipient } from './recipient';
+import { MessageType } from '../types/messageType';
 
 export interface Rule {
   messageType: MessageType;

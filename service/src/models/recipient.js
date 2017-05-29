@@ -1,9 +1,7 @@
-/* @flow */
-
 import mongoose from 'mongoose';
 import recipientSchema from '../schemas/recipient';
 import logger from '../logger';
-import type { ModelConstructor } from '../types/mongoose';
+import { ModelConstructor } from '../types/mongoose';
 
 export interface Recipient {
   name: string;

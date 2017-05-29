@@ -1,4 +1,3 @@
-/* @flow */
 import packageJSON from '../../package.json';
 
 export default (server: any, basePath: string) => {

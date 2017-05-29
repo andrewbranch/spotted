@@ -1,6 +1,4 @@
-/* @flow */
-
-import type { Coordinates } from '../../src/types/coordinates';
+import { Coordinates } from '../../src/types/coordinates';
 import tape from 'tape';
 import { greatCircleInitialCourse, distance } from '../../src/utils/geometry';
 

@@ -1,5 +1,3 @@
-/* @flow */
-
 import Hapi from 'hapi';
 import GraphQL from 'hapi-graphql';
 import RootSchema from './graphql/root';

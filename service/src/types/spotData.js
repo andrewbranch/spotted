@@ -1,7 +1,5 @@
-/* @flow */
-
-import type { Coordinates } from './coordinates';
-import type { MessageType } from  './messageType';
+import { Coordinates } from './coordinates';
+import { MessageType } from  './messageType';
 
 export interface SpotData {
   time: Date;

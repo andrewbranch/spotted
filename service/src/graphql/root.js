@@ -1,5 +1,3 @@
-/* @flow */
-
 import { GQC } from 'graphql-compose';
 import PoiTC from './poi';
 import RecipientTC from './recipient';

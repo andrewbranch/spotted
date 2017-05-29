@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import type { MapsProvider } from '../types/mapsProvider';
+import { MapsProvider } from '../types/mapsProvider';
 const mapsProviders: MapsProvider[] = ['Apple', 'Google'];
 const defaultMapsProvider: MapsProvider = 'Google';
 

@@ -1,7 +1,5 @@
-/* @flow */
-
-import type { Recipient } from '../models/recipient';
-import type { Model } from '../types/mongoose';
+import { Recipient } from '../models/recipient';
+import { Model } from '../types/mongoose';
 import twilio from 'twilio';
 
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE } = process.env;

@@ -1,5 +1,3 @@
-/* @flow */
-
 type ManyQuery<T, PopulatedT> = {
   populate(path: Object | string, select?: Object | string, model?: ModelConstructor<any>, match?: Object, options?: Object): ManyQuery<PopulatedT, PopulatedT>;
   exec(operation?: string | Function, callback?: Function): Promise<Model<T>[]>;

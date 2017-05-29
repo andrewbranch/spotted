@@ -200,10 +200,6 @@ babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
 
-babel-plugin-syntax-flow@^6.18.0:
-  version "6.18.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-syntax-flow/-/babel-plugin-syntax-flow-6.18.0.tgz#4c3ab20a2af26aa20cd25995c398c4eb70310c8d"
-
 babel-plugin-transform-async-functions@^6.8.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-async-functions/-/babel-plugin-transform-async-functions-6.22.0.tgz#8f54eb700b64e143a27a56137bc069ad2258484c"
@@ -378,13 +374,6 @@ babel-plugin-transform-es2015-unicode-regex@^6.22.0:
     babel-helper-regex "^6.22.0"
     babel-runtime "^6.22.0"
     regexpu-core "^2.0.0"
-
-babel-plugin-transform-flow-strip-types@^6.21.0:
-  version "6.22.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-flow-strip-types/-/babel-plugin-transform-flow-strip-types-6.22.0.tgz#84cb672935d43714fdc32bce84568d87441cf7cf"
-  dependencies:
-    babel-plugin-syntax-flow "^6.18.0"
-    babel-runtime "^6.22.0"
 
 babel-plugin-transform-regenerator@^6.21.0, babel-plugin-transform-regenerator@^6.22.0:
   version "6.22.0"
@@ -768,10 +757,6 @@ figures@^1.4.0:
   dependencies:
     escape-string-regexp "^1.0.5"
     object-assign "^4.1.0"
-
-flow-bin@^0.37.4:
-  version "0.37.4"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.37.4.tgz#3d8da2ef746e80e730d166e09040f4198969b76b"
 
 for-each@~0.3.2:
   version "0.3.2"
@@ -1776,6 +1761,10 @@ twilio@^2.11.1:
     scmp "0.0.3"
     string.prototype.startswith "^0.2.0"
     underscore "1.x"
+
+typescript@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.3.3.tgz#9639f3c3b40148e8ca97fe08a51dd1891bb6be22"
 
 underscore@1.x:
   version "1.8.3"

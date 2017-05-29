@@ -1,6 +1,4 @@
-/* @flow */
-
-import type { Colloquialism } from '../../src/utils/formatters';
+import { Colloquialism } from '../../src/utils/formatters';
 import tape from 'tape';
 import { cardinalDirection, colloquialDistance } from '../../src/utils/formatters';
 

@@ -1,9 +1,7 @@
-/* @flow */
-
-import type { Model } from '../types/mongoose';
-import type { PopulatedRule } from '../models/rule';
-import type { Recipient } from '../models/recipient';
-import type { SpotData } from '../types/spotData';
+import { Model } from '../types/mongoose';
+import { PopulatedRule } from '../models/rule';
+import { Recipient } from '../models/recipient';
+import { SpotData } from '../types/spotData';
 import moment from 'moment-timezone';
 import POI from '../models/poi';
 import * as geo from './geometry';

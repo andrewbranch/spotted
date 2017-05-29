@@ -1,5 +1,3 @@
-/* @flow */
-
 import article from 'indefinite-article';
 const { abs } = Math;
 

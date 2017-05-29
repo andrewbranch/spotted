@@ -1,10 +1,8 @@
-/* @flow */
-
 import mongoose from 'mongoose';
 import poiSchema from '../schemas/poi';
 import logger from '../logger';
-import type { Coordinates } from '../types/coordinates';
-import type { ModelConstructor, Model } from '../types/mongoose';
+import { Coordinates } from '../types/coordinates';
+import { ModelConstructor, Model } from '../types/mongoose';
 
 export interface POI {
   name: string;

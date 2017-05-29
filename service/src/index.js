@@ -1,5 +1,3 @@
-/* @flow */
-
 import connectDatabase from './db';
 import startServer from './server';
 import logger from './logger';

@@ -1,6 +1,4 @@
-/* @flow */
-
-import type { SpotData } from '../../src/types/spotData';
+import { SpotData } from '../../src/types/spotData';
 import tape from 'tape';
 import moment from 'moment-timezone';
 import td, { when } from 'testdouble';
