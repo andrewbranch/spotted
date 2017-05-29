@@ -14,6 +14,9 @@ RUN cp -a /tmp/node_modules ./
 # Copy app from host to container
 COPY . ./
 
+# Build TypeScript project
+RUN npm run build
+
 # Start the app
 EXPOSE 3000
 CMD ["npm", "start"]
