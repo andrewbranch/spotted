@@ -1,2 +1,4 @@
 node_modules
-flow-typed
+.vscode
+dist
+test
