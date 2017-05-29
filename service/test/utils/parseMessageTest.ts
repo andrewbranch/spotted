@@ -12,7 +12,7 @@ type Email = {
   type: MessageType;
 };
 
-const commonHeaders = [['X-Spot-Latitude', '37.77402'], ['X-Spot-Longitude', '-122.41721'], ['X-Spot-Messenger', 'Where is Andrew'], ['X-Spot-Time', '1483066721']];
+const commonHeaders: [string, string][] = [['X-Spot-Latitude', '37.77402'], ['X-Spot-Longitude', '-122.41721'], ['X-Spot-Messenger', 'Where is Andrew'], ['X-Spot-Time', '1483066721']];
 
 const ok: Email = {
   headers: new Map(commonHeaders.concat([['X-Spot-Type', 'Check-in/OK']])),
@@ -42,7 +42,7 @@ const bad: Email = {
   type: 'ok',
 }
 
-const runTests = (message: Email) => (t: tape$Context) => {
+const runTests = (message: Email) => (t: tape.Test) => {
   const parsed = parseMessage(message.headers, message.body, message.subject);
   t.equal(parsed.time.toUTCString(), 'Fri, 30 Dec 2016 02:58:41 GMT', 'Parses date/time');
   t.equal(parsed.deviceName, 'Where is Andrew', 'Parses device name');

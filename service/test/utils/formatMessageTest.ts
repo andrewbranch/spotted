@@ -5,7 +5,6 @@ import td, { when } from 'testdouble';
 
 const data: SpotData = {
   time: new Date('1/1/2016 12:00:00 PM PST'),
-  timeZone: 'PST',
   deviceName: 'Where is Andrew',
   coordinates: [37.77402, -122.41721],
   message: 'This is the message from SPOT',

@@ -5,8 +5,8 @@ import { greatCircleInitialCourse, distance } from '../../src/utils/geometry';
 const sf: Coordinates = [37.7573683, -122.7177862];
 const pensacola: Coordinates = [30.4540011, -87.3439368];
 const seattle: Coordinates = [47.6145069, -122.6160864];
-const laptevSea = [75.945205, 126.935170];
-const fortConger = [81.74494, -64.7880197];
+const laptevSea: Coordinates = [75.945205, 126.935170];
+const fortConger: Coordinates = [81.74494, -64.7880197];
 
 // Within half a percent
 const isClose = (a: number, b: number) => Math.abs(b - a) / b < .005;
