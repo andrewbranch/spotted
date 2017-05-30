@@ -1,4 +1,4 @@
-import article from 'indefinite-article';
+import * as article from 'indefinite-article';
 const { abs } = Math;
 
 export const cardinalDirection = (bearing: number, precision: 2 | 3, unabbreviate: 0 | 1 | 2 | 3 = 1) => {

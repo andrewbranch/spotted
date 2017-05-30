@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/src/index.js",
-    "test": "LOG_LEVEL=silent babel-tape-runner test/{,**/}*.js | tap-spec",
+    "test": "LOG_LEVEL=silent ts-node --no-cache node_modules/tape/bin/tape test/{,**/}*.ts | tap-spec",
     "build": "tsc && cp package.json dist/"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "@types/boom": "^4.3.2",
     "@types/hapi": "^16.1.2",
     "@types/lodash": "^4.14.64",
+    "@types/moment-timezone": "^0.2.34",
     "@types/mongoose": "^4.7.13",
     "@types/node": "^7.0.22",
     "@types/tape": "^4.2.30",
@@ -47,6 +48,7 @@
     "tape": "^4.6.3",
     "testdouble": "^1.11.0",
     "timekeeper": "^1.0.0",
+    "ts-node": "^3.0.4",
     "typescript": "^2.3.3"
   }
 }

@@ -1,6 +1,7 @@
 import { SpotData } from '../../src/types/spotData';
+import POI from '../../src/models/poi';
 import * as tape from 'tape';
-import moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 import { when, replace, function as fn } from 'testdouble';
 
 const data: SpotData = {
@@ -35,7 +36,7 @@ tape('formatMessage: simple tokens', async t => {
   t.end();
 });
 
-const POI = replace('../../src/models/poi', { near: fn('near') });
+replace(POI, 'near', fn('near'));
 const cityHallModel = {
   name: 'City Hall',
   presenceRadius: 1,

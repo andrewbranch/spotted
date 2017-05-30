@@ -1,7 +1,7 @@
 import { PopulatedRule } from '../models/rule';
 import { Recipient } from '../models/recipient';
 import { SpotData } from '../types/spotData';
-import moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 import POI from '../models/poi';
 import * as geo from './geometry';
 import * as format from './formatters';
