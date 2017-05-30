@@ -1,22 +1,7 @@
 import { get, flatten, compact } from 'lodash';
 import { Server } from 'hapi';
-import parseMessage from '../utils/parseMessage';
-import formatMessage from '../utils/formatMessage';
-import matchRules from '../utils/matchRules';
-import sendMessage from '../utils/sendMessage';
+import processMessageRequest from './lib/processMessageRequest';
 import logger from '../logger';
-
-const logError = (err: Error) => {
-  logger.error(err.stack);
-  return err;
-};
-
-const fail = (err: Error, response: any) => {
-  logger.error('Failed to parse message.', err.message);
-  logger.silly(err.stack);
-  response.statusCode = 400;
-  response.send();
-};
 
 export default (server: Server, basePath: string) => {
   server.route({
@@ -24,7 +9,7 @@ export default (server: Server, basePath: string) => {
     path: `${basePath}/message`,
     config: {
       auth: 'mailgun',
-      handler: (request, reply) => {
+      handler: async (request, reply) => {
         const emailText = get<string>(request, 'payload.body-plain');
         const emailSubject = get<string>(request, 'payload.subject');
         const emailHeaders = get<string>(request, 'payload.message-headers');
@@ -32,30 +17,13 @@ export default (server: Server, basePath: string) => {
         if (emailText && emailSubject && emailHeaders) {
           const response = reply().hold();
           try {
-            logger.verbose('Parsing message...');
-            const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText, emailSubject);
-            logger.silly('Parsed message:', message);
-            logger.verbose('Finding matching rules...');
-            matchRules(message).then(rules => {
-              return Promise.all(rules.map(rule => {
-                logger.verbose(`Rule matched. Formatting ${rule.messageType} message for ${rule.recipients.length} recipients.`);
-                logger.silly('Rule:', rule);
-                return Promise.all(rule.recipients.map(recipient => formatMessage(rule.messageFormat, message, recipient).then(messageString => {
-                  logger.verbose('Formatted message');
-                  logger.silly(messageString);
-                  return sendMessage(messageString, recipient);
-                }).catch(logError)));
-              })).then(resolutions => {
-                const attemptedMessages = flatten(resolutions);
-                const errors = compact(attemptedMessages);
-                logger.verbose(`Request complete. Sent ${attemptedMessages.length - errors.length} messages, and failed to send ${errors.length} messages.`);
-                response.send();
-              });
-            }).catch(err => {
-              fail(err, response);
-            });
+            await processMessageRequest(emailHeaders, emailText, emailSubject);
+            response.send();
           } catch (err) {
-            fail(err, response);
+            logger.error('Failed to parse message.', err.message);
+            logger.silly(err.stack);
+            response.statusCode = 400;
+            response.send();
           }
         } else {
           logger.error('POST /message did not have a properly formatted payload', request.payload);
