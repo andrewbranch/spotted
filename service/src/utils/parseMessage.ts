@@ -11,8 +11,7 @@ const subjectMessageTypeMap: { [key: string]: MessageType } = {
 
 export default (
   headers: Map<string, string>,
-  body: string,
-  subject: string
+  body: string
 ): SpotData => {
   const trimmed = body.trim();
   const deviceName = headers.get('X-Spot-Messenger') || '';

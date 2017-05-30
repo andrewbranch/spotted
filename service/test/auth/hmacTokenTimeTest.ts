@@ -28,7 +28,7 @@ reply.continue = fn('continue');
 when(reply(), { ignoreExtraArgs: true }).thenResolve(null);
 when(reply.continue(), { ignoreExtraArgs: true }).thenResolve(null);
 
-tape('hmacTokenTime auth scheme', async t => {
+tape('hmacTokenTime: auth scheme', async t => {
   await authenticate({ headers: missingHeaders }, reply);
   t.doesNotThrow(() => verify(reply(statusCode(400)), { times: 1 }), 'auth fails with 400 for missing headers');
   

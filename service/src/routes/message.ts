@@ -17,7 +17,7 @@ export default (server: Server, basePath: string) => {
         if (emailText && emailSubject && emailHeaders) {
           const response = reply().hold();
           try {
-            await processMessageRequest(emailHeaders, emailText, emailSubject);
+            await processMessageRequest(emailHeaders, emailText);
             response.send();
           } catch (err) {
             logger.error('Failed to parse message.', err.message);

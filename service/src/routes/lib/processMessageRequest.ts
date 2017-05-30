@@ -10,9 +10,9 @@ const logError = (err: Error) => {
   return err;
 };
 
-export default async (emailHeaders: string, emailText: string, emailSubject: string) => {
+export default async (emailHeaders: string, emailText: string) => {
   logger.verbose('Parsing message...');
-  const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText, emailSubject);
+  const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText);
   logger.silly('Parsed message:', message);
   logger.verbose('Finding matching rules...');
   const rules = await matchRules(message);
