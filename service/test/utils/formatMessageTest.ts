@@ -57,6 +57,7 @@ when(POI.near([37.774021, -122.417211], Infinity)).thenResolve([Object.assign({}
 when(POI.near(data.coordinates, 10)).thenResolve([cityHallModel]);
 when(POI.near(data.coordinates, 0.1)).thenResolve([]);
 
+// Need to import like this because the replacement above has to happen first.
 const formatMessage = require('../../src/utils/formatMessage').default;
 
 tape('formatMessage: {nearestPOI}', async t => {
