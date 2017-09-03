@@ -2,6 +2,7 @@ import { GQC } from 'graphql-compose';
 import PoiTC from './poi';
 import RecipientTC from './recipient';
 import RuleTC from './rule';
+import SpotMessageTC from './spotMessage';
 
 GQC.rootQuery().addFields({
   poi: PoiTC.getResolver('findById'),
@@ -18,6 +19,11 @@ GQC.rootQuery().addFields({
   rules: RuleTC.getResolver('findMany'),
   ruleCount: RuleTC.getResolver('count'),
   ruleConnection: RuleTC.getResolver('connection'),
+
+  spotMessage: SpotMessageTC.getResolver('findById'),
+  spotMessages: SpotMessageTC.getResolver('findMany'),
+  spotMessageCount: SpotMessageTC.getResolver('count'),
+  spotMessageConnection: SpotMessageTC.getResolver('connection'),
 });
 
 GQC.rootMutation().addFields({
@@ -33,6 +39,11 @@ GQC.rootMutation().addFields({
   updateRule: RuleTC.getResolver('updateById'),
   removeRule: RuleTC.getResolver('removeById'),
   removeRules: RuleTC.getResolver('removeMany'),
+
+  createSpotMessage: SpotMessageTC.getResolver('createOne'),
+  updateSpotMessage: SpotMessageTC.getResolver('updateById'),
+  removeSpotMessage: SpotMessageTC.getResolver('removeById'),
+  removeSpotMessages: SpotMessageTC.getResolver('removeMany'),
 });
 
 export default GQC.buildSchema();
