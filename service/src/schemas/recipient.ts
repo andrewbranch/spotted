@@ -1,9 +1,9 @@
 import * as mongoose from 'mongoose';
-import { MapsProvider } from '../types/mapsProvider';
+import { MapsProvider } from '../types';
 const mapsProviders: MapsProvider[] = ['Apple', 'Google'];
 const defaultMapsProvider: MapsProvider = 'Google';
 
-export default new mongoose.Schema({
+export const RecipientSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   preferences: {

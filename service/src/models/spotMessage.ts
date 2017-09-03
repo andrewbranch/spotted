@@ -1,7 +1,7 @@
-import{ Document, model } from 'mongoose';
-import spotMessageSchema from '../schemas/spotMessage';
-import { SpotMessage } from '../types';
+import { Document, model } from 'mongoose';
+import { SpotMessageSchema } from '../schemas';
+import { SpotMessage as ISpotMessage } from '../types';
 import logger from '../logger';
 
-export default model<SpotMessage & Document>('Recipient', spotMessageSchema);
+export const SpotMessage = model<ISpotMessage & Document>('SpotMessage', SpotMessageSchema);
 logger.verbose('Registered Recipient Mongoose model');

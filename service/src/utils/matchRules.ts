@@ -1,7 +1,7 @@
-import { Model } from 'mongoose';
-import { SpotMessage } from '../types/spotMessage';
-import Rule, { PopulatedRule } from '../models/rule';
+import { Model, Document } from 'mongoose';
+import { SpotMessage, PopulatedRule } from '../types';
+import { Rule } from '../models';
 
-export default (data: SpotMessage) => (
+export const matchRules = (data: SpotMessage) => (
   Rule.find({ enabled: true, messageType: data.messageType }).populate({ path: 'recipients', model: 'Recipient' }).exec() as any as Promise<(PopulatedRule & Document)[]>
 );

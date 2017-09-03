@@ -1,7 +1,7 @@
 import * as tk from 'timekeeper';
 import * as tape from 'tape';
 import { when, matchers, verify, function as fn } from 'testdouble';
-import hmacTokenTimeScheme from '../../src/auth/hmacTokenTime';
+import { hmacTokenTimeScheme } from '../../src/auth';
 
 const { MAILGUN_API_KEY } = process.env;
 if (!MAILGUN_API_KEY) throw new Error('MAILGUN_API_KEY was missing from environment');

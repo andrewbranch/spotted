@@ -1,14 +1,7 @@
 import { Document, Model, model } from 'mongoose';
-import poiSchema, { statics } from '../schemas/poi';
+import { POISchema, poiStatics } from '../schemas/poi';
+import { Coordinates, POI as IPOI } from '../types';
 import logger from '../logger';
-import { Coordinates } from '../types/coordinates';
 
-export interface POI {
-  name: string;
-  presenceRadius: number;
-  preposition: string;
-  coordinates: Coordinates;
-};
-
-export default model<POI & Document>('POI', poiSchema) as Model<POI & Document> & typeof statics;
+export const POI = model<IPOI & Document>('POI', POISchema) as Model<IPOI & Document> & typeof poiStatics;
 logger.verbose('Registered POI Mongoose model');

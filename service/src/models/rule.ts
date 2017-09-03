@@ -1,19 +1,7 @@
 import { Document, Schema, model } from 'mongoose';
-import ruleSchema from '../schemas/rule';
+import { RuleSchema } from '../schemas';
+import { Rule as IRule } from '../types';
 import logger from '../logger';
-import { Recipient } from './recipient';
-import { MessageType } from '../types/messageType';
 
-export interface Rule {
-  messageType: MessageType;
-  messageFormat: string;
-  enabled: boolean;
-  recipients: Recipient[] | Schema.Types.ObjectId[] | string[];
-};
-
-export interface PopulatedRule extends Rule {
-  recipients: Recipient[];
-};
-
-export default model<Rule & Document>('Rule', ruleSchema);
+export const Rule = model<IRule & Document>('Rule', RuleSchema);
 logger.verbose('Registered Rule Mongoose model');

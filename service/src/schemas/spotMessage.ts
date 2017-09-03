@@ -15,4 +15,4 @@ const schema: { [key in keyof SpotMessage]: any } = {
   fullText: { type: String, required: true }
 };
 
-export default new mongoose.Schema(schema);
+export const SpotMessageSchema = new mongoose.Schema(schema);

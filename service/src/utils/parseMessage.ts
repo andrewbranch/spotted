@@ -1,7 +1,6 @@
 import { get } from 'lodash';
 import * as assert from 'assert';
-import { SpotMessage } from '../types/spotMessage';
-import { MessageType } from '../types/messageType';
+import { SpotMessage, MessageType } from '../types';
 
 const subjectMessageTypeMap: { [key: string]: MessageType } = {
   'Check-in/OK': 'ok',
@@ -9,7 +8,7 @@ const subjectMessageTypeMap: { [key: string]: MessageType } = {
   'Custom': 'custom',
 };
 
-export default (
+export const parseMessage = (
   headers: Map<string, string>,
   body: string
 ): SpotMessage => {

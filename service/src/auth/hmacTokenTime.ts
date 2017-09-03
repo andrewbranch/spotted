@@ -23,7 +23,7 @@ const authenticate = ({ signature, timestamp, token }, reply, key, ...continueAr
   return reply.continue(...continueArgs);
 };
 
-export default (_, options) => {
+export const hmacTokenTimeScheme = (_, options) => {
   if (options.payload) {
     return {
       authenticate: (request, reply) => reply.continue({ credentials: {} }),

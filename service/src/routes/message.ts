@@ -1,9 +1,9 @@
 import { get, flatten, compact } from 'lodash';
 import { Server } from 'hapi';
-import processMessageRequest from './lib/processMessageRequest';
+import { processMessageRequest } from './lib';
 import logger from '../logger';
 
-export default (server: Server, basePath: string) => {
+export const messageRoute = (server: Server, basePath: string) => {
   server.route({
     method: 'POST',
     path: `${basePath}/message`,

@@ -1,15 +1,7 @@
-import{ Document, model } from 'mongoose';
-import recipientSchema from '../schemas/recipient';
-import { MapsProvider } from '../types/mapsProvider';
+import { Document, model } from 'mongoose';
+import { RecipientSchema } from '../schemas';
+import { Recipient as IRecipient } from '../types';
 import logger from '../logger';
 
-export interface Recipient {
-  name: string;
-  phone: string;
-  preferences: {
-    mapsProvider: MapsProvider;
-  }
-}
-
-export default model<Recipient & Document>('Recipient', recipientSchema);
+export const Recipient = model<IRecipient & Document>('Recipient', RecipientSchema);
 logger.verbose('Registered Recipient Mongoose model');

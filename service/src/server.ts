@@ -1,9 +1,8 @@
 import { Server } from 'hapi';
 import * as GraphQL from 'hapi-graphql';
-import RootSchema from './graphql/root';
-import messageRoute from './routes/message';
-import statusRoute from './routes/status';
-import hmacTokenTimeScheme from './auth/hmacTokenTime';
+import { RootSchema } from './graphql';
+import { messageRoute, statusRoute } from './routes';
+import { hmacTokenTimeScheme } from './auth';
 const API_PATH = '/api';
 const GRAPHQL_PATH = '/graph';
 const PRODUCTION = process.env.NODE_ENV === 'production';

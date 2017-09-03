@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { Coordinates } from '../types/coordinates';
+import { Coordinates } from '../types';
 
 const POISchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -11,7 +11,7 @@ const POISchema = new mongoose.Schema({
   },
 });
 
-export const statics = {
+export const poiStatics = {
   near: function(coordinates: Coordinates, radiusMeters: number) {
     return this.where('location').near({
       center: { coordinates: [coordinates[1], coordinates[0]], type: 'Point' },
@@ -21,11 +21,11 @@ export const statics = {
 };
 
 POISchema.index({ location: '2dsphere' });
-Object.assign(POISchema.statics, statics);
+Object.assign(POISchema.statics, poiStatics);
 
 // Mongoose stores lat/lng backwards (i.e., [lng, lat])
 POISchema.virtual('coordinates').get(function () {
   return [this.location.coordinates[1], this.location.coordinates[0]];
 });
 
-export default POISchema;
+export { POISchema };

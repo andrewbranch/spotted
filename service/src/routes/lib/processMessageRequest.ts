@@ -1,16 +1,13 @@
 import { flatten, compact } from 'lodash';
+import { parseMessage, formatMessage, matchRules, sendMessage } from '../../utils';
 import logger from '../../logger';
-import parseMessage from '../../utils/parseMessage';
-import formatMessage from '../../utils/formatMessage';
-import matchRules from '../../utils/matchRules';
-import sendMessage from '../../utils/sendMessage';
 
 const logError = (err: Error) => {
   logger.error(err.stack);
   return err;
 };
 
-export default async (emailHeaders: string, emailText: string) => {
+export const processMessageRequest = async (emailHeaders: string, emailText: string) => {
   logger.verbose('Parsing message...');
   const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText);
   logger.silly('Parsed message:', message);

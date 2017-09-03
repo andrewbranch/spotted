@@ -1,7 +1,6 @@
-import { SpotMessage } from '../../src/types/spotMessage';
-import POI from '../../src/models/poi';
-import { Recipient } from '../../src/models/recipient';
-import formatMessage from '../../src/utils/formatMessage';
+import { SpotMessage, Recipient } from '../../src/types';
+import { POI } from '../../src/models';
+import { formatMessage } from '../../src/utils';
 import * as tape from 'tape';
 import * as moment from 'moment-timezone';
 import { when, replace, function as fn } from 'testdouble';

@@ -1,8 +1,5 @@
 import { GQC } from 'graphql-compose';
-import PoiTC from './poi';
-import RecipientTC from './recipient';
-import RuleTC from './rule';
-import SpotMessageTC from './spotMessage';
+import { PoiTC, RecipientTC, RuleTC, SpotMessageTC } from './typeConverters';
 
 GQC.rootQuery().addFields({
   poi: PoiTC.getResolver('findById'),
@@ -46,4 +43,4 @@ GQC.rootMutation().addFields({
   removeSpotMessages: SpotMessageTC.getResolver('removeMany'),
 });
 
-export default GQC.buildSchema();
+export const RootSchema = GQC.buildSchema();

@@ -1,8 +1,6 @@
-import { PopulatedRule } from '../models/rule';
-import { Recipient } from '../models/recipient';
-import { SpotMessage } from '../types/spotMessage';
+import { POI } from '../models';
+import { SpotMessage, Recipient } from '../types';
 import * as moment from 'moment-timezone';
-import POI from '../models/poi';
 import * as geo from './geometry';
 import * as format from './formatters';
 
@@ -67,7 +65,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   },
 };
 
-export default (template: string, data: SpotMessage, recipient: Recipient): Promise<string> => {
+export const formatMessage = (template: string, data: SpotMessage, recipient: Recipient): Promise<string> => {
   let match;
   const matcher = /{([a-z]+?)(:([^}]+))?}/ig;
   const replacements = [];

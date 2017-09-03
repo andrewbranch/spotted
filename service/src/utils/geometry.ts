@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/coordinates';
+import { Coordinates } from '../types';
 const R_EARTH_MI = 3959;
 const { PI, sin, cos, tan, atan2, acos, floor, abs } = Math;
 

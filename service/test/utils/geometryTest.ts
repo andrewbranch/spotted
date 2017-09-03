@@ -1,6 +1,6 @@
-import { Coordinates } from '../../src/types/coordinates';
+import { Coordinates } from '../../src/types';
 import * as tape from 'tape';
-import { greatCircleInitialCourse, distance } from '../../src/utils/geometry';
+import { greatCircleInitialCourse, distance } from '../../src/utils';
 
 const sf: Coordinates = [37.7573683, -122.7177862];
 const pensacola: Coordinates = [30.4540011, -87.3439368];
