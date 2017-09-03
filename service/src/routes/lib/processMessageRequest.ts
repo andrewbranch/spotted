@@ -1,4 +1,5 @@
 import { flatten, compact } from 'lodash';
+import { SpotMessage } from '../../models';
 import { parseMessage, formatMessage, matchRules, sendMessage } from '../../utils';
 import logger from '../../logger';
 
@@ -11,7 +12,9 @@ export const processMessageRequest = async (emailHeaders: string, emailText: str
   logger.verbose('Parsing message...');
   const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText);
   logger.silly('Parsed message:', message);
-  logger.verbose('Finding matching rules...');
+  logger.verbose('Saving message...');
+  await SpotMessage.saveMessage(message);
+  logger.verbose('Saved message. Finding matching rules...');
   const rules = await matchRules(message);
   await Promise.all(rules.map(rule => {
     logger.verbose(`Rule matched. Formatting ${rule.messageType} message for ${rule.recipients.length} recipients.`);

@@ -2,6 +2,7 @@ import * as tape from 'tape';
 import * as path from 'path';
 import * as fs from 'fs';
 import { verify, when, replace, matchers, function as fn } from 'testdouble';
+import { SpotMessage } from '../../src/models';
 import { Rule } from '../../src/types';
 import { processMessageRequest } from '../../src/routes/lib';
 
@@ -22,46 +23,44 @@ const rule: Rule = {
   }]
 };
 
+const saveMessage = fn('SpotMessage.create');
 const sendMessage = fn('sendMessage');
 const matchRules = fn('matchRules');
+replace(SpotMessage, 'create', saveMessage);
 replace(require('../../src/utils'), 'matchRules', matchRules);
 replace(require('../../src/utils'), 'sendMessage', sendMessage);
+when(saveMessage(), { ignoreExtraArgs: true }).thenResolve(null);
 when(sendMessage(), { ignoreExtraArgs: true }).thenResolve(null);
 when(matchRules(matchers.contains({ deviceName: 'Where is Andrew' }))).thenResolve([rule]);
 when(matchRules(matchers.contains({ deviceName: 'Dónde está Andrew' }))).thenResolve([rule, rule]);
 
-tape('processMessageRequest: matches one rule and sends message to one recipient', async t => {
-  try {
-    await processMessageRequest(headers1, body);
-    t.doesNotThrow(() => verify(sendMessage('1', rule.recipients[0]), { times: 1 }));
-    t.end();
-  } catch (err) {
-    t.end(err);
-  }
+tape('processMessageRequest: saves message, matches one rule, and sends to one recipient', async t => {
+  await processMessageRequest(headers1, body);
+  verify(saveMessage(matchers.contains({
+    messageType: 'help',
+    coordinates: {
+      type: 'Point',
+      coordinates: [-122.12345, 37.12345]
+    }
+  })), { times: 1 });
+  verify(sendMessage('1', rule.recipients[0]), { times: 1 });
+  t.end();
 });
 
 tape('processMessageRequest: matches multiple rules and sends messages for each', async t => {
   const modifiedRule = { ...rule, messageFormat: '2' };
   when(sendMessage(), { ignoreExtraArgs: true }).thenResolve(null);
   when(matchRules(), { ignoreExtraArgs: true }).thenResolve([modifiedRule, modifiedRule]);
-  try {
-    await processMessageRequest(headers2, body);
-    t.doesNotThrow(() => verify(sendMessage('2', rule.recipients[0]), { times: 2 }));
-    t.end();
-  } catch (err) {
-    t.end(err);
-  }
+  await processMessageRequest(headers2, body);
+  verify(sendMessage('2', rule.recipients[0]), { times: 2 });
+  t.end();
 });
 
 tape('processMessageRequest: sends a message to each recipient on a rule', async t => {
   const modifiedRule = { ...rule, messageFormat: '3', recipients: [rule.recipients[0], rule.recipients[0]] };
   when(sendMessage(), { ignoreExtraArgs: true }).thenResolve(null);
   when(matchRules(), { ignoreExtraArgs: true }).thenResolve([modifiedRule, modifiedRule]);
-  try {
-    await processMessageRequest(headers2, body);
-    t.doesNotThrow(() => verify(sendMessage('3', rule.recipients[0]), { times: 4 }));
-    t.end();
-  } catch (err) {
-    t.end(err);
-  }
+  await processMessageRequest(headers2, body);
+  verify(sendMessage('3', rule.recipients[0]), { times: 4 });
+  t.end();
 });
