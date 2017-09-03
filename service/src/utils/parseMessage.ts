@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 import * as assert from 'assert';
-import { SpotData } from '../types/spotData';
+import { SpotMessage } from '../types/spotMessage';
 import { MessageType } from '../types/messageType';
 
 const subjectMessageTypeMap: { [key: string]: MessageType } = {
@@ -12,7 +12,7 @@ const subjectMessageTypeMap: { [key: string]: MessageType } = {
 export default (
   headers: Map<string, string>,
   body: string
-): SpotData => {
+): SpotMessage => {
   const trimmed = body.trim();
   const deviceName = headers.get('X-Spot-Messenger') || '';
   assert.ok(deviceName, 'was able to parse deviceName');

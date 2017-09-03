@@ -1,4 +1,4 @@
-import { SpotData } from '../../src/types/spotData';
+import { SpotMessage } from '../../src/types/spotMessage';
 import POI from '../../src/models/poi';
 import { Recipient } from '../../src/models/recipient';
 import formatMessage from '../../src/utils/formatMessage';
@@ -6,7 +6,7 @@ import * as tape from 'tape';
 import * as moment from 'moment-timezone';
 import { when, replace, function as fn } from 'testdouble';
 
-const data: SpotData = {
+const data: SpotMessage = {
   time: new Date('1/1/2016 12:00:00 PM PST'),
   deviceName: 'Where is Andrew',
   coordinates: [37.77402, -122.41721],

@@ -1,7 +1,7 @@
 import { Coordinates } from './coordinates';
 import { MessageType } from  './messageType';
 
-export interface SpotData {
+export interface SpotMessage {
   time: Date;
   deviceName: string;
   coordinates: Coordinates;

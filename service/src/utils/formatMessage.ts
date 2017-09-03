@@ -1,12 +1,12 @@
 import { PopulatedRule } from '../models/rule';
 import { Recipient } from '../models/recipient';
-import { SpotData } from '../types/spotData';
+import { SpotMessage } from '../types/spotMessage';
 import * as moment from 'moment-timezone';
 import POI from '../models/poi';
 import * as geo from './geometry';
 import * as format from './formatters';
 
-type TokenReplacer = (data: SpotData, recipient: Recipient, params: Map<string, string>) => Promise<string>;
+type TokenReplacer = (data: SpotMessage, recipient: Recipient, params: Map<string, string>) => Promise<string>;
 
 const dms = (deg: number): [number, number, number] => {
   const degree = Math.abs(deg);
@@ -67,7 +67,7 @@ const tokenReplacers: { [key: string]: TokenReplacer } = {
   },
 };
 
-export default (template: string, data: SpotData, recipient: Recipient): Promise<string> => {
+export default (template: string, data: SpotMessage, recipient: Recipient): Promise<string> => {
   let match;
   const matcher = /{([a-z]+?)(:([^}]+))?}/ig;
   const replacements = [];

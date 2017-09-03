@@ -1,7 +1,7 @@
 import * as tape from 'tape';
 import * as fs from 'fs';
 import * as path from 'path';
-import { SpotData } from '../../src/types/spotData';
+import { SpotMessage } from '../../src/types/spotMessage';
 import { MessageType } from '../../src/types/messageType';
 import parseMessage from '../../src/utils/parseMessage';
 
