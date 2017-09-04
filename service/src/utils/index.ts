@@ -1,3 +1,4 @@
+export * from './findDuplicateMessages';
 export * from './formatMessage';
 export * from './formatters';
 export * from './geometry';

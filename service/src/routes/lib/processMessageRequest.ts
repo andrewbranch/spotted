@@ -1,6 +1,6 @@
 import { flatten, compact } from 'lodash';
 import { SpotMessage } from '../../models';
-import { parseMessage, formatMessage, matchRules, sendMessage } from '../../utils';
+import { parseMessage, formatMessage, matchRules, sendMessage, findDuplicateMessages } from '../../utils';
 import logger from '../../logger';
 
 const logError = (err: Error) => {
@@ -12,6 +12,13 @@ export const processMessageRequest = async (emailHeaders: string, emailText: str
   logger.verbose('Parsing message...');
   const message = parseMessage(new Map<string, string>(JSON.parse(emailHeaders)), emailText);
   logger.silly('Parsed message:', message);
+
+  const duplicates = await findDuplicateMessages(message);
+  if (duplicates.length) {
+    logger.verbose(`Message was determined to be a duplicate in a series of ${duplicates.length + 1}. Aborting.`);
+    return;
+  }
+
   logger.verbose('Saving message...');
   await SpotMessage.saveMessage(message);
   logger.verbose('Saved message. Finding matching rules...');
